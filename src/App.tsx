@@ -2,22 +2,21 @@
 
 // import "./App.css";
 import { useState } from "react";
-import Heading from "./design_system/heading/src";
-import Main from "./design_system/main/src";
+// import Heading from "./design_system/heading/src";
+// import Main from "./design_system/main/src";
+import {
+  Main,
+  Table,
+  Breadcrumbs,
+  SkipLink,
+  GridRow,
+  GridCol,
+  TopNav,
+  Heading,
+} from "govuk-react";
 // import SearchBox from "./design_system/search-box/src";
-import CPS from "./assets/CPS.svg";
 
-import Table from "./design_system/table/src";
-import Cell from "./design_system/table/src/atoms/Cell";
-import CellHeader from "./design_system/table/src/atoms/CellHeader";
-import Row from "./design_system/table/src/atoms/Row";
-import TableBody from "./design_system/table/src/atoms/TableBody";
-import TableHeader from "./design_system/table/src/atoms/TableHeader";
-import TopNav from "./design_system/top-nav/src";
-import Breadcrumbs from "./design_system/breadcrumbs/src";
-import SkipLink from "./design_system/skip-link/src";
-import GridRow from "./design_system/grid-row/src";
-import GridCol from "./design_system/grid-col/src";
+// import TopNav from "./design_system/top-nav/src";
 
 type Victim = {
   fullName: string;
@@ -50,15 +49,15 @@ function App() {
         </GridRow>
         <Table
           head={
-            <Row>
-              <Cell>Full Name</Cell>
-            </Row>
+            <Table.Row>
+              <Table.Cell>Full Name</Table.Cell>
+            </Table.Row>
           }
           body={victims.map((victim) => {
             return (
-              <Row>
-                <Cell>{victim.fullName}</Cell>
-              </Row>
+              <Table.Row>
+                <Table.Cell>{victim.fullName}</Table.Cell>
+              </Table.Row>
             );
           })}
         />
