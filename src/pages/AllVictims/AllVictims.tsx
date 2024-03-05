@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import {
   Table,
   GridRow,
@@ -8,12 +8,14 @@ import {
   Link,
   Pagination,
   SectionBreak,
-  PhaseBanner,
+  // PhaseBanner,
   Tag,
 } from "govuk-react";
 
-import { Victim } from "../types/types";
+import { Victim } from "../../types/types";
 import { useNavigate } from "react-router-dom";
+
+const PAGE_SIZE = 20;
 
 function TableRow({ victim }: { victim: Victim }) {
   const navigate = useNavigate();
@@ -23,7 +25,7 @@ function TableRow({ victim }: { victim: Victim }) {
     <Table.Row>
       <Table.Cell>
         <Link
-          href={""}
+          href="javascript:void(0);"
           onClick={() => navigate(`/victims/${victim.id}`)}
           noVisitedState
         >
@@ -32,14 +34,16 @@ function TableRow({ victim }: { victim: Victim }) {
       </Table.Cell>
       <Table.Cell>
         <Tag tint={tagColor}>{classification}</Tag>
+        <div></div>
       </Table.Cell>
-      <Table.Cell>{outstandingTasks}</Table.Cell>
     </Table.Row>
   );
 }
 
 function AllVictims({ victims }: { victims: Victim[] }) {
   const [search, setSearch] = useState("");
+
+  const [page, setPage] = useState(0);
 
   const filteredVictims = useMemo(() => {
     return victims.filter((victim) => {
@@ -48,11 +52,19 @@ function AllVictims({ victims }: { victims: Victim[] }) {
     });
   }, [victims, search]);
 
+  const totalPages = useMemo(() => {
+    return Math.ceil(filteredVictims.length / PAGE_SIZE);
+  }, [filteredVictims]);
+
+  useEffect(() => {
+    setPage(0);
+  }, [filteredVictims]);
+
   return (
     <>
-      <PhaseBanner level="alpha">This system is in development</PhaseBanner>
+      {/* <PhaseBanner level="alpha">This system is in development</PhaseBanner> */}
       {/* <Breadcrumbs>All Victims</Breadcrumbs> */}
-      <SectionBreak level="MEDIUM" visible={false} />
+      {/* <SectionBreak level="MEDIUM" visible={false} /> */}
       <Heading size="LARGE">All Victims</Heading>
       <GridRow>
         <GridCol setWidth="two-thirds">
@@ -69,25 +81,42 @@ function AllVictims({ victims }: { victims: Victim[] }) {
         </GridCol>
       </GridRow>
       <SectionBreak level="MEDIUM" visible={false} />
-      <Table
-        head={
-          <Table.Row>
-            <Table.CellHeader>Full Name</Table.CellHeader>
-            <Table.CellHeader>Classification</Table.CellHeader>
-            <Table.CellHeader>Outstanding Tasks</Table.CellHeader>
-          </Table.Row>
-        }
-        body={filteredVictims.slice(0, 20).map((victim) => {
-          return <TableRow victim={victim} />;
-        })}
-      />
+      {filteredVictims.length > 0 && (
+        <Table
+          head={
+            <Table.Row>
+              <Table.CellHeader setWidth="75%">Full Name</Table.CellHeader>
+              <Table.CellHeader setWidth="25%">Classification</Table.CellHeader>
+            </Table.Row>
+          }
+          body={filteredVictims
+            .slice(page * PAGE_SIZE, (page + 1) * PAGE_SIZE)
+            .map((victim) => {
+              return <TableRow victim={victim} />;
+            })}
+        />
+      )}
       <Pagination>
-        <Pagination.Anchor href="#prev" pageTitle="1 of 3" previousPage>
-          Previous page
-        </Pagination.Anchor>
-        <Pagination.Anchor href="#next" nextPage pageTitle="3 of 3">
-          Next page
-        </Pagination.Anchor>
+        {page !== 0 && (
+          <Pagination.Anchor
+            href="#prev"
+            pageTitle={`Page ${page} of ${totalPages}`}
+            previousPage
+            onClick={() => setPage(page - 1)}
+          >
+            Previous page
+          </Pagination.Anchor>
+        )}
+        {page + 1 < totalPages && (
+          <Pagination.Anchor
+            href="#next"
+            nextPage
+            pageTitle={`Page ${page + 2} of ${totalPages}`}
+            onClick={() => setPage(page + 1)}
+          >
+            Next page
+          </Pagination.Anchor>
+        )}
       </Pagination>
     </>
   );

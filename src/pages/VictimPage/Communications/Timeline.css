@@ -1,0 +1,113 @@
+/* ==========================================================================
+   #TIMELINE
+   ========================================================================== */
+
+.frame {
+  background-color: white;
+  padding: 1em;
+  position: relative;
+  border: 1px solid #dfdfdf;
+  border-radius: 5px;
+}
+
+.moj-timeline {
+  margin-bottom: 32px; /* Assuming govuk-spacing(4) equals 32px */
+  overflow: hidden;
+  position: relative;
+}
+
+.moj-timeline:before {
+  background-color: #005ea5; /* Replace with actual color value */
+  content: "";
+  height: 100%;
+  left: 0;
+  position: absolute;
+  top: 16px; /* Assuming govuk-spacing(2) equals 16px */
+  width: 5px;
+}
+
+.moj-timeline--full {
+  margin-bottom: 0;
+}
+
+.moj-timeline--full:before {
+  height: calc(100% - 75px);
+}
+
+.moj-timeline__item {
+  padding-bottom: 48px; /* Assuming govuk-spacing(6) equals 48px */
+  padding-left: 32px; /* Assuming govuk-spacing(4) equals 32px */
+  position: relative;
+}
+
+.moj-timeline__item:before {
+  background-color: #005ea5; /* Replace with actual color value */
+  content: "";
+  height: 5px;
+  left: 0;
+  position: absolute;
+  top: 16px; /* Assuming govuk-spacing(2) equals 16px */
+  width: 15px;
+}
+
+.moj-timeline__title {
+  font-size: 19px;
+  font-weight: bold;
+  display: inline;
+  margin-right: 0.5em;
+}
+
+.moj-timeline__byline {
+  font-size: 19px;
+  color: #666; /* Replace with actual color value */
+  display: inline;
+  margin: 0;
+}
+
+.moj-timeline__date {
+  font-size: 16px;
+  margin-top: 8px; /* Assuming govuk-spacing(1) equals 8px */
+  margin-bottom: 0;
+}
+
+.moj-timeline__description {
+  font-size: 19px;
+  margin-top: 32px; /* Assuming govuk-spacing(4) equals 32px */
+}
+
+/* ==========================================================================
+       #TIMELINE DOCUMENT STYLES – FOR BACKWARDS COMPATIBILITY
+       ========================================================================== */
+
+.moj-timeline__documents {
+  list-style: none;
+  margin-bottom: 0;
+  padding-left: 0;
+}
+
+.moj-timeline__document-item {
+  margin-bottom: 8px; /* Assuming govuk-spacing(1) equals 8px */
+}
+
+.moj-timeline__document-item:last-child {
+  margin-bottom: 0;
+}
+
+.moj-timeline__document-icon {
+  float: left;
+  margin-top: 4px;
+  margin-right: 4px;
+  fill: currentColor; /* Check if there's an appropriate replacement */
+}
+
+.moj-timeline__document-link {
+  /* background-image: url("icon-document.svg"); */
+  background-repeat: no-repeat;
+  background-size: 20px 16px;
+  background-position: 0 50%;
+  padding-left: 40px; /* Assuming govuk-spacing(5) equals 40px */
+}
+
+.moj-timeline__document-link:focus {
+  color: #000; /* Assuming black */
+}

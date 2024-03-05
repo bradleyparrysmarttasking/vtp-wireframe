@@ -11,6 +11,9 @@
     "@types/react": "^18.2.61",
     "@types/react-dom": "^18.2.19",
     "@types/styled-components": "^5.1.34",
+    "dayjs": "^1.11.10",
+    "docx": "^8.5.0",
+    "file-saver": "^2.0.5",
     "govuk-react": "^0.10.6",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
@@ -24,7 +27,8 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "generate": "node generate_data/generateDummyData.js"
   },
   "eslintConfig": {
     "extends": [
@@ -43,5 +47,9 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  }
+  },
+  "devDependencies": {
+    "@faker-js/faker": "^8.4.1"
+  },
+  "type": "module"
 }
