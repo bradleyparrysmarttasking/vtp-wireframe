@@ -2,52 +2,31 @@ import localizedFormat from "dayjs/plugin/localizedFormat";
 import * as dayjs from "dayjs";
 import { Communication } from "../../../types/types";
 import "./Timeline.css";
+import { Tag } from "govuk-react";
 
 dayjs.extend(localizedFormat);
-
-const dummyCommunications: Communication[] = [
-  {
-    title: "Initial Interview",
-    updater: "John Doe",
-    detail:
-      "Conducted initial interview with the victim to gather information about the incident.",
-    time: "2024-03-05T10:00:00",
-    documents: ["interview_notes.pdf"],
-  },
-  {
-    title: "Follow-up Call",
-    updater: "Jane Smith",
-    detail:
-      "Followed up with the victim to provide updates on the case progress.",
-    time: "2024-03-06T14:30:00",
-    documents: [],
-  },
-  {
-    title: "Case Review Meeting",
-    updater: "Michael Johnson",
-    detail:
-      "Participated in a meeting to review the case and discuss further actions.",
-    time: "2024-03-08T09:00:00",
-    documents: ["meeting_agenda.pdf", "case_summary.docx"],
-  },
-];
 
 function TimelineItem({
   title,
   detail,
   updater,
   documents,
-  time,
+  date,
   index,
+  type,
 }: Communication & { index: number }) {
   //@ts-ignore
-  const timeString = dayjs(time).format("LLLL");
+  const timeString = dayjs(date).format("LLLL");
   return (
     <div className="moj-timeline__item" key={index}>
       <div className="moj-timeline__header">
-        <h2 className="moj-timeline__title">{title}</h2>
+        <h2 className="moj-timeline__title">{type}</h2>
 
-        <p className="moj-timeline__byline">updated by {updater}</p>
+        <Tag tint={"GREEN"}>Communication</Tag>
+
+        <p className="moj-timeline__byline" style={{ marginLeft: "0.5em" }}>
+          updated by {updater}
+        </p>
       </div>
 
       <p className="moj-timeline__date">
@@ -82,18 +61,52 @@ function TimelineItem({
   );
 }
 
+function CaseTimelineItem({
+  statusName,
+  date,
+  index,
+}: {
+  statusName: string;
+  date: string;
+} & { index: number }) {
+  //@ts-ignore
+  const timeString = dayjs(date).format("LLLL");
+  return (
+    <div className="moj-timeline__item" key={index}>
+      <div className="moj-timeline__header">
+        <h2 className="moj-timeline__title">{statusName}</h2>
+        <Tag>Case Update</Tag>
+      </div>
+
+      <p className="moj-timeline__date">
+        <time>{timeString}</time>
+      </p>
+    </div>
+  );
+}
+
 export default function Timeline({
   victimCommunications,
+  caseTimeline,
 }: {
   victimCommunications: Communication[];
+  caseTimeline: any[];
 }) {
-  console.log({ dummyCommunications });
+  const validCaseTimeline = caseTimeline.filter((item: any) => item.date);
+  const combined = [...validCaseTimeline, ...victimCommunications];
+  const sorted = combined.sort((a: any, b: any) => {
+    return new Date(a.date).getTime() - new Date(b.date).getTime();
+  });
   return (
     <>
-      {dummyCommunications.length > 0 && (
+      {sorted.length > 0 && (
         <div className="moj-timeline">
-          {dummyCommunications.map((communication, index) => {
-            return <TimelineItem {...communication} index={index} />;
+          {sorted.map((obj, index) => {
+            return obj.statusName ? (
+              <CaseTimelineItem {...obj} index={index} />
+            ) : (
+              <TimelineItem {...obj} index={index} />
+            );
           })}
         </div>
       )}

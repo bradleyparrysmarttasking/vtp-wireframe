@@ -1,16 +1,9 @@
-import { useMemo } from "react";
+import { useContext, useMemo } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { Case, Communication, Victim } from "../../types/types";
+import DataContext from "../../context/DataContext";
 
-export default function useVictimPage({
-  victims,
-  cases,
-  communications,
-}: {
-  victims: Victim[];
-  cases: Case[];
-  communications: Communication[];
-}) {
+export default function useVictimPage() {
+  const { victims, cases, communications } = useContext(DataContext);
   const { victimId } = useParams();
   const navigate = useNavigate();
 
@@ -26,7 +19,13 @@ export default function useVictimPage({
     })[0];
   }, [victim, cases]);
 
-  const victimCommunications = useMemo(() => [], []);
+  const victimCommunications = useMemo(() => {
+    return communications.filter((comm) => {
+      return comm.caseId === victim.caseId;
+    });
+  }, [victim, communications]);
+
+  console.log({ victimCommunications });
 
   const { fullName } = victim;
   return {

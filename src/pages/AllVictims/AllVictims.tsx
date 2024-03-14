@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useContext, useEffect, useMemo, useState } from "react";
 import {
   Table,
   GridRow,
@@ -14,6 +14,7 @@ import {
 
 import { Victim } from "../../types/types";
 import { useNavigate } from "react-router-dom";
+import DataContext from "../../context/DataContext";
 
 const PAGE_SIZE = 20;
 
@@ -21,6 +22,26 @@ function TableRow({ victim }: { victim: Victim }) {
   const navigate = useNavigate();
   const { fullName, classification, outstandingTasks } = victim;
   const tagColor = classification === "Universal" ? "BLUE" : "GREEN";
+
+  const {
+    intimidated,
+    specialNeeds,
+    vulnerable,
+    unacceptableBehaviour,
+    highlyVulnerable,
+  } = victim;
+  const filteredCharateristics = [
+    { value: intimidated, title: "Intimidated" },
+    { value: specialNeeds, title: "Special Needs" },
+    { value: vulnerable, title: "Vulnerable" },
+    // { value: age < 18, title: "Child" },
+    {
+      value: unacceptableBehaviour,
+      title: "Unacceptable Behaviour",
+    },
+    { value: highlyVulnerable, title: "Highly Vulnerable" },
+  ].filter((char) => char.value);
+
   return (
     <Table.Row>
       <Table.Cell>
@@ -32,6 +53,14 @@ function TableRow({ victim }: { victim: Victim }) {
           {fullName}
         </Link>
       </Table.Cell>
+      {/* <Table.Cell>
+        <div style={{ display: "flex", gap: "1em" }}>
+          {filteredCharateristics.map((char) => (
+            <Tag>{char.title}</Tag>
+          ))}
+        </div>
+        <div></div>
+      </Table.Cell> */}
       <Table.Cell>
         <Tag tint={tagColor}>{classification}</Tag>
         <div></div>
@@ -40,9 +69,9 @@ function TableRow({ victim }: { victim: Victim }) {
   );
 }
 
-function AllVictims({ victims }: { victims: Victim[] }) {
+function AllVictims() {
+  const { victims } = useContext(DataContext);
   const [search, setSearch] = useState("");
-
   const [page, setPage] = useState(0);
 
   const filteredVictims = useMemo(() => {
@@ -63,7 +92,6 @@ function AllVictims({ victims }: { victims: Victim[] }) {
   return (
     <>
       {/* <PhaseBanner level="alpha">This system is in development</PhaseBanner> */}
-      {/* <Breadcrumbs>All Victims</Breadcrumbs> */}
       {/* <SectionBreak level="MEDIUM" visible={false} /> */}
       <Heading size="LARGE">All Victims</Heading>
       <GridRow>
@@ -86,6 +114,9 @@ function AllVictims({ victims }: { victims: Victim[] }) {
           head={
             <Table.Row>
               <Table.CellHeader setWidth="75%">Full Name</Table.CellHeader>
+              {/* <Table.CellHeader setWidth="50%">
+                Characteristics
+              </Table.CellHeader> */}
               <Table.CellHeader setWidth="25%">Classification</Table.CellHeader>
             </Table.Row>
           }

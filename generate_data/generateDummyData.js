@@ -1,7 +1,7 @@
 import { appendFileSync, unlinkSync, writeFileSync, readFileSync } from "fs";
-import { Victims, Cases } from "./schemas/index.js";
+import { Victims, Cases, Communications } from "./schemas/index.js";
 
-const schemasList = [Cases, Victims];
+const schemasList = [Cases, Victims, Communications];
 
 const frozenSchemas = [
   // "Victims"
@@ -56,11 +56,11 @@ schemasList.forEach((schema) => {
 
       inputObject[name].push(record);
 
-      const rows = [record].reduce((string, record) => {
-        const row = Object.values(record).join(",") + "\n";
-        string += row;
-        return string;
-      }, "");
+      // const rows = [record].reduce((string, record) => {
+      //   const row = Object.values(record).join(",") + "\n";
+      //   string += row;
+      //   return string;
+      // }, "");
 
       try {
         // appendFileSync(

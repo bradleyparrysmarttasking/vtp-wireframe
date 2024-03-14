@@ -8,14 +8,18 @@ import { useNavigate } from "react-router-dom";
 export default function Communications({
   victimCommunications,
   victimId,
+  caseTimeline,
 }: {
   victimCommunications: Communication[];
   victimId: string;
+  caseTimeline: any[];
 }) {
   const navigate = useNavigate();
   return (
     <SectionBox
-      title={<Heading size="SMALL">Victim Communications</Heading>}
+      title={
+        <Heading size="SMALL">Case Timeline & Victim Communications</Heading>
+      }
       controls={
         <Button
           onClick={() => navigate(`/victims/${victimId}/communications/create`)}
@@ -24,7 +28,10 @@ export default function Communications({
         </Button>
       }
     >
-      <Timeline victimCommunications={victimCommunications} />
+      <Timeline
+        victimCommunications={victimCommunications}
+        caseTimeline={caseTimeline}
+      />
     </SectionBox>
   );
 }

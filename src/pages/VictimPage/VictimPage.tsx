@@ -1,16 +1,11 @@
-import { Victim, Case, Communication } from "../../types/types";
-import { BackLink, Breadcrumbs, Heading, Link } from "govuk-react";
-import PersonalDetails from "./PersonalDetails";
+import { Breadcrumbs, Heading, Link } from "govuk-react";
+import PersonalDetails from "./PersonalDetails/PersonalDetails";
 import CaseInformation from "./CaseInformation";
 import Communications from "./Communications/Communications";
 import useVictimPage from "./useVictimPage";
-import Templates from "./Templates/Templates";
+// import Templates from "./Templates/Templates";
 
-export default function VictimPage(props: {
-  victims: Victim[];
-  cases: Case[];
-  communications: Communication[];
-}) {
+export default function VictimPage() {
   const {
     navigate,
     victim,
@@ -18,7 +13,8 @@ export default function VictimPage(props: {
     fullName,
     victimCommunications,
     victimId,
-  } = useVictimPage(props);
+  } = useVictimPage();
+
   return (
     <>
       {/* <BackLink
@@ -35,11 +31,12 @@ export default function VictimPage(props: {
       </Breadcrumbs>
       <Heading size="LARGE">{fullName}</Heading>
       <PersonalDetails victim={victim} />
-      <CaseInformation caseObject={caseObject} />
+      <CaseInformation caseObject={caseObject} victim={victim} />
       {/* <Templates caseObject={caseObject} victim={victim} /> */}
       <Communications
         victimCommunications={victimCommunications}
         victimId={victimId}
+        caseTimeline={caseObject.timeline}
       />
     </>
   );
