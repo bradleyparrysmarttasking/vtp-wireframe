@@ -8,6 +8,7 @@ export type Case = {
 
 export type Victim = {
   id: string;
+  victimId: string;
   fullName: string;
   namePreference: string;
   preferredLanguage: string;

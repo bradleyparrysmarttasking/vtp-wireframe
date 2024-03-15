@@ -58,12 +58,20 @@ function generateUKLandlineNumber() {
   return prefix + randomDigits;
 }
 
+const victimIdBase = "V00000";
+
 export const Victims = (inputObject) => {
   return {
     name: "Victim",
     numberOfRecords: 236,
     createFunction: ({ index }) => {
       const id = faker.string.uuid();
+      const victimId =
+        victimIdBase.slice(
+          0,
+          victimIdBase.length - (index + 1).toString().length
+        ) +
+        (index + 1);
 
       const caseObject =
         inputObject.Case[index] ?? faker.helpers.arrayElement(inputObject.Case);
@@ -161,6 +169,7 @@ export const Victims = (inputObject) => {
 
       return {
         id,
+        victimId,
         fullName,
         outstandingTasks,
         classification,

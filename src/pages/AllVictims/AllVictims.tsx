@@ -20,7 +20,7 @@ const PAGE_SIZE = 20;
 
 function TableRow({ victim }: { victim: Victim }) {
   const navigate = useNavigate();
-  const { fullName, classification, outstandingTasks } = victim;
+  const { fullName, classification, outstandingTasks, victimId } = victim;
   const tagColor = classification === "Universal" ? "BLUE" : "GREEN";
 
   const {
@@ -44,6 +44,9 @@ function TableRow({ victim }: { victim: Victim }) {
 
   return (
     <Table.Row>
+      <Table.Cell>
+        <b>{victimId}</b>
+      </Table.Cell>
       <Table.Cell>
         <Link
           href="javascript:void(0);"
@@ -75,9 +78,13 @@ function AllVictims() {
   const [page, setPage] = useState(0);
 
   const filteredVictims = useMemo(() => {
+    const lowerSearch = search.toLowerCase();
     return victims.filter((victim) => {
       if (!search) return true;
-      return victim.fullName.toLowerCase().includes(search);
+      return (
+        victim.fullName.toLowerCase().includes(lowerSearch) ||
+        victim.victimId.toLowerCase().includes(lowerSearch)
+      );
     });
   }, [victims, search]);
 
@@ -113,10 +120,12 @@ function AllVictims() {
         <Table
           head={
             <Table.Row>
-              <Table.CellHeader setWidth="75%">Full Name</Table.CellHeader>
+              <Table.CellHeader setWidth="15%">ID</Table.CellHeader>
+              <Table.CellHeader setWidth="50%">Full Name</Table.CellHeader>
               {/* <Table.CellHeader setWidth="50%">
                 Characteristics
               </Table.CellHeader> */}
+
               <Table.CellHeader setWidth="25%">Classification</Table.CellHeader>
             </Table.Row>
           }
