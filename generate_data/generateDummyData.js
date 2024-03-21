@@ -1,7 +1,21 @@
 import { appendFileSync, unlinkSync, writeFileSync, readFileSync } from "fs";
-import { Victims, Cases, Communications } from "./schemas/index.js";
+import {
+  Victims,
+  Cases,
+  Communications,
+  Defendants,
+  Contacts,
+  Tasks,
+} from "./schemas/index.js";
 
-const schemasList = [Cases, Victims, Communications];
+const schemasList = [
+  Cases,
+  Victims,
+  Communications,
+  Defendants,
+  Contacts,
+  Tasks,
+];
 
 const frozenSchemas = [
   // "Victims"

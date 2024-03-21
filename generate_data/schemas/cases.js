@@ -1,4 +1,5 @@
 import { faker } from "@faker-js/faker";
+import { NUM_CASES } from "../seedData.js";
 // import { weightedRandom } from "../functions/weightedArray";
 
 const statuses = [
@@ -28,10 +29,37 @@ const timelineList = [
   "Retention & Destruction",
 ];
 
+function generateRandomURN() {
+  function randomUpperCaseString(length) {
+    var characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    var result = "";
+    for (var i = 0; i < length; i++) {
+      var randomIndex = Math.floor(Math.random() * characters.length);
+      result += characters[randomIndex];
+    }
+    return result;
+  }
+
+  var result = "";
+  // Generate the first two digits
+  result += Math.floor(Math.random() * 10);
+  result += Math.floor(Math.random() * 10);
+
+  // Generate two uppercase letters
+  result += randomUpperCaseString(2);
+
+  // Generate four digits
+  for (var i = 0; i < 4; i++) {
+    result += Math.floor(Math.random() * 10);
+  }
+
+  return result;
+}
+
 export const Cases = (inputObject) => {
   return {
     name: "Case",
-    numberOfRecords: Math.round(236 * 1.1),
+    numberOfRecords: NUM_CASES,
     createFunction: ({ index }) => {
       const id = faker.string.uuid();
       const description = faker.lorem.sentence();
@@ -76,12 +104,15 @@ export const Cases = (inputObject) => {
         timeline[i + 1].date = sortedDates[i];
       }
 
+      const urn = generateRandomURN() + offenceDate.toISOString().slice(2, 4);
+
       return {
         id,
         description,
         type,
         timeline,
         currentStage,
+        urn,
       };
     },
   };

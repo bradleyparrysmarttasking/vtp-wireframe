@@ -3,6 +3,8 @@ import * as dayjs from "dayjs";
 import { Communication } from "../../../types/types";
 import "./Timeline.css";
 import { Tag } from "govuk-react";
+import { useContext } from "react";
+import ThemeContext from "../../../context/ThemeContext";
 
 dayjs.extend(localizedFormat);
 
@@ -92,15 +94,16 @@ export default function Timeline({
   victimCommunications: Communication[];
   caseTimeline: any[];
 }) {
+  const { cms, enriched, contactApp, ddei } = useContext(ThemeContext);
   const validCaseTimeline = caseTimeline.filter((item: any) => item.date);
   const combined = [...validCaseTimeline, ...victimCommunications];
   const sorted = combined.sort((a: any, b: any) => {
     return new Date(a.date).getTime() - new Date(b.date).getTime();
   });
   return (
-    <>
+    <div style={{ padding: "1em" }}>
       {sorted.length > 0 && (
-        <div className="moj-timeline">
+        <div className="moj-timeline" style={ddei}>
           {sorted.map((obj, index) => {
             return obj.statusName ? (
               <CaseTimelineItem {...obj} index={index} />
@@ -110,6 +113,6 @@ export default function Timeline({
           })}
         </div>
       )}
-    </>
+    </div>
   );
 }

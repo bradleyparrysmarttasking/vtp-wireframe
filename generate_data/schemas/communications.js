@@ -1,10 +1,11 @@
 import { faker } from "@faker-js/faker";
+import { NUM_COMMS } from "../seedData.js";
 // import { weightedRandom } from "../functions/weightedArray";
 
 export const Communications = (inputObject) => {
   return {
     name: "Communication",
-    numberOfRecords: Math.round(236 * 2),
+    numberOfRecords: NUM_COMMS,
     createFunction: ({ index }) => {
       const id = faker.string.uuid();
       const type = faker.helpers.arrayElement([
@@ -19,8 +20,14 @@ export const Communications = (inputObject) => {
 
       const documents = type === "Letter" ? ["letter.pdf"] : [];
 
-      const caseObject = faker.helpers.arrayElement(inputObject.Case);
+      const caseObject =
+        inputObject.Case[index] ?? faker.helpers.arrayElement(inputObject.Case);
       const caseId = caseObject.id;
+
+      const victim = faker.helpers.arrayElement(
+        inputObject.Victim.filter((victim) => victim.caseIds.includes(caseId))
+      );
+      const victimId = victim.id;
 
       const date = faker.date.between({
         from: caseObject.timeline[0].date,
@@ -36,6 +43,7 @@ export const Communications = (inputObject) => {
         date,
         documents,
         caseId,
+        victimId,
       };
     },
   };

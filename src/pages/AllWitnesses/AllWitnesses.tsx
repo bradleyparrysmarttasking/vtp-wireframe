@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useMemo, useState } from "react";
+import { useContext, useEffect, useMemo, useState } from "react";
 import {
   Table,
   GridRow,
@@ -11,29 +11,25 @@ import {
   // PhaseBanner,
   Tag,
   Checkbox,
-  H1,
 } from "govuk-react";
 
 import { Victim } from "../../types/types";
 import { useNavigate } from "react-router-dom";
 import DataContext from "../../context/DataContext";
-import ThemeContext from "../../context/ThemeContext";
 
 const PAGE_SIZE = 20;
 
-function TableRow({ victim, hasTask }: { victim: Victim; hasTask: any }) {
+function TableRow({ victim }: { victim: Victim }) {
   const navigate = useNavigate();
-  const { ddei, enriched } = useContext(ThemeContext);
-  const { fullName, classification, outstandingTasks, victimId } = victim;
+  const { fullName, classification, victimId } = victim;
   const tagColor = classification === "Universal" ? "BLUE" : "GREEN";
 
   const {
-    // intimidated,
-    // specialNeeds,
-    // vulnerable,
-    // unacceptableBehaviour,
-    // highlyVulnerable,
-    caseUrns,
+    intimidated,
+    specialNeeds,
+    vulnerable,
+    unacceptableBehaviour,
+    highlyVulnerable,
   } = victim;
   // const filteredCharateristics = [
   //   { value: intimidated, title: "Intimidated" },
@@ -49,10 +45,10 @@ function TableRow({ victim, hasTask }: { victim: Victim; hasTask: any }) {
 
   return (
     <Table.Row>
-      <Table.Cell style={enriched}>
+      <Table.Cell>
         <b>{victimId}</b>
       </Table.Cell>
-      <Table.Cell style={ddei}>
+      <Table.Cell>
         <Link
           href="javascript:void(0);"
           onClick={() => navigate(`/home/victims/${victim.id}`)}
@@ -60,70 +56,27 @@ function TableRow({ victim, hasTask }: { victim: Victim; hasTask: any }) {
         >
           {fullName}
         </Link>
-        {hasTask ? (
-          <div
-            style={{
-              height: 10,
-              width: 10,
-              backgroundColor: "red",
-              borderRadius: "50%",
-              display: "inline-block",
-              marginLeft: "0.5em",
-            }}
-          ></div>
-        ) : (
-          ""
-        )}
-      </Table.Cell>
-      {/* <Table.Cell>
-        <div style={{ display: "flex", gap: "1em" }}>
-          {filteredCharateristics.map((char) => (
-            <Tag>{char.title}</Tag>
-          ))}
-        </div>
-        <div></div>
-      </Table.Cell> */}
-      <Table.Cell style={ddei}>{caseUrns.join(", ")}</Table.Cell>
-      <Table.Cell style={enriched}>
-        {classification && (
-          <>
-            <Tag tint={tagColor}>{classification}</Tag>
-            <div></div>
-          </>
-        )}
       </Table.Cell>
     </Table.Row>
   );
 }
 
-function AllVictims() {
-  const { victims, tasks } = useContext(DataContext);
+function AllWitnesses() {
+  const { victims } = useContext(DataContext);
   const [search, setSearch] = useState("");
   const [page, setPage] = useState(0);
   const [checked, setChecked] = useState(true);
 
-  const taskObject = useMemo(() => {
-    //@ts-ignore
-    return Object.groupBy(tasks, (task) => task.victimId);
-  }, [tasks]);
-
-  console.log({ taskObject });
-
   const filteredVictims = useMemo(() => {
     const lowerSearch = search.toLowerCase();
-    return victims
-      .filter((victim) => {
-        if (checked && victim.isVictim === false) return false;
-        if (!search) return true;
-        return (
-          victim.fullName.toLowerCase().includes(lowerSearch) ||
-          victim.victimId.toLowerCase().includes(lowerSearch) ||
-          victim.caseUrns.join(" ").toLowerCase().includes(lowerSearch)
-        );
-      })
-      .sort((a: any, b: any) => {
-        return a.fullName === b.fullName ? 0 : a.fullName > b.fullName ? 1 : -1;
-      });
+    return victims.filter((victim) => {
+      if (checked && victim.isVictim === true) return false;
+      if (!search) return true;
+      return (
+        victim.fullName.toLowerCase().includes(lowerSearch) ||
+        victim.victimId.toLowerCase().includes(lowerSearch)
+      );
+    });
   }, [victims, search, checked]);
 
   const totalPages = useMemo(() => {
@@ -138,7 +91,7 @@ function AllVictims() {
     <>
       {/* <PhaseBanner level="alpha">This system is in development</PhaseBanner> */}
       {/* <SectionBreak level="MEDIUM" visible={false} /> */}
-      <H1>Victims & Witnesses</H1>
+      <Heading size="LARGE">All Witnesses</Heading>
       <GridRow>
         <GridCol setWidth="two-thirds">
           <SearchBox>
@@ -152,7 +105,7 @@ function AllVictims() {
             <SearchBox.Button />
           </SearchBox>
         </GridCol>
-        <GridCol setWidth="one-third">
+        {/* <GridCol setWidth="one-third">
           <Checkbox
             sizeVariant="SMALL"
             checked={checked}
@@ -166,7 +119,7 @@ function AllVictims() {
           >
             Victims Only
           </Checkbox>
-        </GridCol>
+        </GridCol> */}
       </GridRow>
       <SectionBreak level="MEDIUM" visible={false} />
       {filteredVictims.length > 0 && (
@@ -174,20 +127,13 @@ function AllVictims() {
           head={
             <Table.Row>
               <Table.CellHeader setWidth="20%">ID</Table.CellHeader>
-              <Table.CellHeader setWidth="35%">Full Name</Table.CellHeader>
-              {/* <Table.CellHeader setWidth="50%">
-                Characteristics
-              </Table.CellHeader> */}
-              <Table.CellHeader setWidth="25%">Case URNs</Table.CellHeader>
-              <Table.CellHeader setWidth="20%">Classification</Table.CellHeader>
+              <Table.CellHeader setWidth="80%">Full Name</Table.CellHeader>
             </Table.Row>
           }
           body={filteredVictims
             .slice(page * PAGE_SIZE, (page + 1) * PAGE_SIZE)
             .map((victim) => {
-              return (
-                <TableRow victim={victim} hasTask={taskObject[victim.id]} />
-              );
+              return <TableRow victim={victim} />;
             })}
         />
       )}
@@ -217,4 +163,4 @@ function AllVictims() {
   );
 }
 
-export default AllVictims;
+export default AllWitnesses;

@@ -1,4 +1,5 @@
 import { faker } from "@faker-js/faker";
+import { NUM_WITNESSES, PERCENTAGE_VICTIMS } from "../seedData.js";
 
 /*
 type Victim = {
@@ -58,14 +59,20 @@ function generateUKLandlineNumber() {
   return prefix + randomDigits;
 }
 
-const victimIdBase = "V00000";
+const victimIdBase = "W00000";
 
 export const Victims = (inputObject) => {
   return {
     name: "Victim",
-    numberOfRecords: 236,
+    numberOfRecords: NUM_WITNESSES,
     createFunction: ({ index }) => {
       const id = faker.string.uuid();
+
+      const isVictim =
+        faker.helpers.maybe(() => true, {
+          probability: PERCENTAGE_VICTIMS,
+        }) ?? false;
+
       const victimId =
         victimIdBase.slice(
           0,
@@ -73,9 +80,17 @@ export const Victims = (inputObject) => {
         ) +
         (index + 1);
 
-      const caseObject =
-        inputObject.Case[index] ?? faker.helpers.arrayElement(inputObject.Case);
-      const caseId = caseObject.id;
+      const count = faker.helpers.maybe(() => 2, { probability: 0.1 }) ?? 1;
+
+      const caseObjects = inputObject.Case[index]
+        ? [inputObject.Case[index]]
+        : faker.helpers.arrayElements(inputObject.Case, {
+            min: count,
+            max: count,
+          });
+
+      const caseIds = caseObjects.map((caseObject) => caseObject.id);
+      const caseUrns = caseObjects.map((caseObject) => caseObject.urn);
 
       const sex = faker.helpers.arrayElement(["male", "female"]);
 
@@ -83,12 +98,14 @@ export const Victims = (inputObject) => {
       const lastName = faker.person.lastName();
       const fullName = `${firstName} ${lastName}`;
 
-      const outstandingTasks = faker.helpers.arrayElement([
-        0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 2, 3,
-      ]);
+      const outstandingTasks =
+        faker.helpers.maybe(() => true, { probability: 0.15 }) ?? false;
 
-      const classification =
-        caseObject.type === "RASSO" ? "Enhanced" : "Universal";
+      const classification = isVictim
+        ? caseIds[0].type === "RASSO"
+          ? "Enhanced"
+          : "Universal"
+        : "";
 
       const preferredLanguage =
         faker.helpers.maybe(
@@ -122,9 +139,9 @@ export const Victims = (inputObject) => {
       const wcuDetailedNeedsAssessment = faker.lorem.paragraph();
       const dashAssessment = faker.lorem.paragraph();
       const isvaName =
-        caseObject.type === "RASSO" ? faker.person.fullName() : "";
+        caseIds[0].type === "RASSO" ? faker.person.fullName() : "";
       const isvaContactDetails =
-        caseObject.type === "RASSO"
+        caseIds[0].type === "RASSO"
           ? "+44" + generateUKMobileNumber().slice(1)
           : "";
 
@@ -175,7 +192,7 @@ export const Victims = (inputObject) => {
         classification,
         preferredLanguage,
         dob,
-        caseId,
+        caseIds,
         namePreference,
         contactPreference,
         mobile,
@@ -199,6 +216,8 @@ export const Victims = (inputObject) => {
         specialMeasuresGranted,
         missingSpecialMeasures,
         crisisHandlingPolicyActivated,
+        isVictim,
+        caseUrns,
       };
     },
   };

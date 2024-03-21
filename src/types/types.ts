@@ -4,6 +4,16 @@ export type Case = {
   type: string;
   timeline: { statusName: string; date: string }[];
   currentStage: string;
+  urn: string;
+};
+
+export type Task = {
+  id: string;
+  victimId: string;
+  description: string;
+  startDate: string;
+  endDate: string;
+  complete: boolean;
 };
 
 export type Victim = {
@@ -35,9 +45,11 @@ export type Victim = {
   hasMadeVPS: string;
   vpsDetails: string;
   specialMeasuresGranted: string;
-  outstandingTasks: number;
+  outstandingTasks: boolean;
   classification: string;
-  caseId: string;
+  caseIds: string[];
+  caseUrns: string[];
+  isVictim: boolean;
 };
 
 export type Communication = {
@@ -49,4 +61,21 @@ export type Communication = {
   date: string;
   documents?: string[];
   caseId: string;
+  victimId: string;
+};
+
+export type Defendant = {
+  id: string;
+  caseId: string;
+  victimIds: string[];
+  fullName: string;
+};
+
+export type Contact = {
+  id: string;
+  victimId: string;
+  fullName: string;
+  phone: string;
+  email: string;
+  relation: string;
 };
