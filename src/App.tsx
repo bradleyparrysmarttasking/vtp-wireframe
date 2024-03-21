@@ -39,7 +39,7 @@ const themeObject = {
 };
 
 function App() {
-  const [showDataSource, setShowDataSource] = useState(true);
+  const [showDataSource, setShowDataSource] = useState(false);
   const [victims, setVictims] = useState<Victim[]>(initialVictimData.data);
   const [cases, setCases] = useState<Case[]>(initialCaseData.data);
   const [communications, setCommunications] = useState<Communication[]>(
