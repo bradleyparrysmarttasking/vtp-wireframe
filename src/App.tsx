@@ -36,6 +36,7 @@ const themeObject = {
   ddei: { backgroundColor: "#9fc5e8" },
   enriched: { backgroundColor: "#d9ead3" },
   contactApp: { backgroundColor: "#d9d2e9" },
+  mg: { backgroundColor: "#f4cccc" },
 };
 
 function App() {
@@ -77,6 +78,7 @@ function App() {
                 ddei: {},
                 enriched: {},
                 contactApp: {},
+                mg: {},
               }
         }
       >
@@ -99,6 +101,7 @@ function App() {
                 padding: "1em",
                 borderRadius: "1em",
                 border: "1px solid #dddddd",
+                zIndex: 400,
               }}
             >
               <div style={{ display: "grid", gridTemplateColumns: "1fr 3fr" }}>
@@ -126,6 +129,14 @@ function App() {
                   }}
                 ></div>
                 <div>Enrichment Needed</div>
+                <div
+                  style={{
+                    ...themeObject.mg,
+                    height: "1em",
+                    width: "1em",
+                  }}
+                ></div>
+                <div>MG Form</div>
               </div>
             </div>
           )}

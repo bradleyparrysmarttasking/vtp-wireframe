@@ -2,7 +2,7 @@ import localizedFormat from "dayjs/plugin/localizedFormat";
 import * as dayjs from "dayjs";
 import { Communication } from "../../../types/types";
 import "./Timeline.css";
-import { Tag } from "govuk-react";
+import { GridCol, GridRow, SearchBox, Select, Tag } from "govuk-react";
 import { useContext } from "react";
 import ThemeContext from "../../../context/ThemeContext";
 
@@ -102,6 +102,28 @@ export default function Timeline({
   });
   return (
     <div style={{ padding: "1em" }}>
+      <GridRow style={{ marginBottom: "1em" }}>
+        <GridCol setWidth="two-thirds">
+          <SearchBox>
+            {/*@ts-ignore*/}
+            <SearchBox.Input
+              placeholder="Search communications & case updates"
+              // value={search}
+              // onChange={(e) => setSearch(e.target.value)}
+            />
+            {/*@ts-ignore*/}
+            <SearchBox.Button />
+          </SearchBox>
+        </GridCol>
+        <GridCol setWidth="one-third">
+          {/* @ts-ignore */}
+          <Select>
+            <option value="0">Case Updates & Comms</option>
+            <option value="1">Case Updates</option>
+            <option value="2">Comms</option>
+          </Select>
+        </GridCol>
+      </GridRow>
       {sorted.length > 0 && (
         <div className="moj-timeline" style={ddei}>
           {sorted.map((obj, index) => {

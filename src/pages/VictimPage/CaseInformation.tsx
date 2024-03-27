@@ -3,6 +3,7 @@ import { Case, Victim } from "../../types/types";
 import SectionBox from "./SectionBox";
 import { useContext } from "react";
 import ThemeContext from "../../context/ThemeContext";
+import Defendants from "./Defendants/Defendants";
 // import VRR from "./VRR";
 
 export default function CaseInformation({
@@ -12,7 +13,7 @@ export default function CaseInformation({
   caseObjects: Case[];
   victim: Victim;
 }) {
-  const { cms, enriched, contactApp, ddei } = useContext(ThemeContext);
+  const { cms, enriched, contactApp, ddei, mg } = useContext(ThemeContext);
   const {
     policeInitialNeedsAssessment,
     wcuDetailedNeedsAssessment,
@@ -43,12 +44,13 @@ export default function CaseInformation({
               >
                 <b>Case Status App iFrame</b>
               </div>
+              {/* <Defendants victim={victim} /> */}
               <Table>
-                <Table.Row>
+                <Table.Row style={cms}>
                   <Table.CellHeader setWidth="25%">Type</Table.CellHeader>
                   <Table.Cell setWidth="75%">{type}</Table.Cell>
                 </Table.Row>
-                <Table.Row>
+                <Table.Row style={cms}>
                   <Table.CellHeader>Description</Table.CellHeader>
                   <Table.Cell>{description}</Table.Cell>
                 </Table.Row>
@@ -69,14 +71,14 @@ export default function CaseInformation({
                   <Table.CellHeader>DASH Assessment</Table.CellHeader>
                   <Table.Cell>{dashAssessment}</Table.Cell>
                 </Table.Row>
-                <Table.Row style={enriched}>
+                <Table.Row style={mg}>
                   <Table.CellHeader>
                     Victim Personal Statement (VPS) Submitted
                   </Table.CellHeader>
                   <Table.Cell>{hasMadeVPS}</Table.Cell>
                 </Table.Row>
                 {hasMadeVPS === "Yes" && (
-                  <Table.Row style={enriched}>
+                  <Table.Row style={mg}>
                     <Table.CellHeader>VPS Details</Table.CellHeader>
                     <Table.Cell>{vpsDetails}</Table.Cell>
                   </Table.Row>

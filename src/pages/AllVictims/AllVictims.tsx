@@ -101,6 +101,7 @@ function AllVictims() {
   const [search, setSearch] = useState("");
   const [page, setPage] = useState(0);
   const [checked, setChecked] = useState(true);
+  const [actions, setActions] = useState(false);
 
   const taskObject = useMemo(() => {
     //@ts-ignore
@@ -114,6 +115,7 @@ function AllVictims() {
     return victims
       .filter((victim) => {
         if (checked && victim.isVictim === false) return false;
+        if (actions && !taskObject[victim.id]) return false;
         if (!search) return true;
         return (
           victim.fullName.toLowerCase().includes(lowerSearch) ||
@@ -124,7 +126,7 @@ function AllVictims() {
       .sort((a: any, b: any) => {
         return a.fullName === b.fullName ? 0 : a.fullName > b.fullName ? 1 : -1;
       });
-  }, [victims, search, checked]);
+  }, [victims, search, checked, actions]);
 
   const totalPages = useMemo(() => {
     return Math.ceil(filteredVictims.length / PAGE_SIZE);
@@ -140,7 +142,7 @@ function AllVictims() {
       {/* <SectionBreak level="MEDIUM" visible={false} /> */}
       <H1>Victims & Witnesses</H1>
       <GridRow>
-        <GridCol setWidth="two-thirds">
+        <GridCol setWidth="one-half">
           <SearchBox>
             {/*@ts-ignore*/}
             <SearchBox.Input
@@ -152,7 +154,7 @@ function AllVictims() {
             <SearchBox.Button />
           </SearchBox>
         </GridCol>
-        <GridCol setWidth="one-third">
+        <GridCol setWidth="one-half" style={{ display: "flex", gap: 5 }}>
           <Checkbox
             sizeVariant="SMALL"
             checked={checked}
@@ -165,6 +167,19 @@ function AllVictims() {
             }}
           >
             Victims Only
+          </Checkbox>
+          <Checkbox
+            sizeVariant="SMALL"
+            checked={actions}
+            onChange={(e) => setActions(e.target.checked)}
+            style={{
+              opacity: 100,
+              height: 30,
+              width: 30,
+              marginRight: "0.5em",
+            }}
+          >
+            Action Required
           </Checkbox>
         </GridCol>
       </GridRow>

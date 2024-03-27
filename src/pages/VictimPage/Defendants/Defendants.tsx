@@ -10,6 +10,8 @@ export default function Defendants({ victim }) {
   const { victimId } = useParams();
   const { defendants } = useContext(DataContext);
 
+  console.log({ defendants });
+
   const victimDefendants = defendants.filter((defendant) => {
     return defendant.victimIds.includes(victimId);
   });
@@ -20,8 +22,10 @@ export default function Defendants({ victim }) {
     );
   });
 
+  console.log({ victimDefendants });
+
   return (
-    <SectionBox title={<H2>Defendants</H2>}>
+    <SectionBox title={<H3>Defendants</H3>}>
       {victimDefendants.length > 0 && (
         <>
           <H3>Victim Defendants</H3>

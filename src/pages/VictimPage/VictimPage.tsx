@@ -1,4 +1,12 @@
-import { Breadcrumbs, H1, Heading, HintText, Link, Tabs } from "govuk-react";
+import {
+  Breadcrumbs,
+  Button,
+  H1,
+  Heading,
+  HintText,
+  Link,
+  Tabs,
+} from "govuk-react";
 import PersonalDetails from "./PersonalDetails/PersonalDetails";
 import CaseInformation from "./CaseInformation";
 import Communications from "./Communications/Communications";
@@ -42,10 +50,17 @@ export default function VictimPage() {
         </Link>
         <Link>{fullName}</Link>
       </Breadcrumbs>
-      <div style={{ display: "flex", alignItems: "baseline", gap: "1em" }}>
-        {/* @ts-ignore */}
-        <H1 style={ddei}>{fullName}</H1>
-        <HintText style={enriched}>{victim.victimId}</HintText>
+      <div style={{ display: "flex", justifyContent: "space-between" }}>
+        <div style={{ display: "flex", alignItems: "baseline", gap: "1em" }}>
+          {/* @ts-ignore */}
+          <H1 style={ddei}>{fullName}</H1>
+          <HintText style={enriched}>{victim.victimId}</HintText>
+        </div>
+        {!victim.isVictim && (
+          <div>
+            <Button style={{ margin: 0 }}>Make Victim</Button>
+          </div>
+        )}
       </div>
       <Tabs>
         <Tabs.Title>Content</Tabs.Title>

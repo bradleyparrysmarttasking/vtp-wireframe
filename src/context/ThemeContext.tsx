@@ -5,6 +5,7 @@ interface IThemeContext {
   ddei: any;
   enriched: any;
   contactApp: any;
+  mg: any;
 }
 
 const ThemeContext = createContext<IThemeContext>({
@@ -12,6 +13,7 @@ const ThemeContext = createContext<IThemeContext>({
   ddei: {},
   enriched: {},
   contactApp: {},
+  mg: {},
 });
 
 export default ThemeContext;

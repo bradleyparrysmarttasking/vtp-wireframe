@@ -25,13 +25,13 @@ const formQuestions = [
 
 const mockSearchResults = [
   {
-    urn: "13/UJ/4942/19",
+    urn: "13UJ494219",
     defendants: "Emile Ullrich",
     victims: "Ivory Gerhold, Marquis Ferry",
     otherWitnesses: "Cristobal Frami, Terrence Sanford",
   },
   {
-    urn: "20/FT/7691/17",
+    urn: "20FT769117",
     defendants: "Emile Ullrich",
     victims: "Ivory Gerhold, Marquis Ferry",
     otherWitnesses: "Cristobal Frami, Terrence Sanford",
@@ -117,12 +117,14 @@ export default function ImportCase() {
                     height: "100%",
                   }}
                 >
-                  <Button
-                    style={{ margin: "0.5em" }}
-                    onClick={() => setImportSuccessful(true)}
-                  >
-                    Import
-                  </Button>
+                  <div>
+                    <Button
+                      style={{ margin: "0.5em" }}
+                      onClick={() => setImportSuccessful(true)}
+                    >
+                      Import
+                    </Button>
+                  </div>
                 </div>
               </div>
             );
