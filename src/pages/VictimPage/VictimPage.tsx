@@ -28,6 +28,7 @@ export default function VictimPage() {
     victimTasks,
     cms,
     enriched,
+    contactApp,
     ddei,
   } = useVictimPage();
 

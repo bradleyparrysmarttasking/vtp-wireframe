@@ -58,6 +58,7 @@ export default function Overview({
     // child,
     unacceptableBehaviour,
     highlyVulnerable,
+    vrrSubmitted,
     details,
   } = victim;
   const dayjsDob = dayjs(dob);
@@ -117,6 +118,7 @@ export default function Overview({
           </div>
         </div>
       )}
+
       <Table>
         <Table.Row style={enriched}>
           <Table.CellHeader>Classification</Table.CellHeader>
@@ -149,10 +151,27 @@ export default function Overview({
           justifyContent: "center",
           border: "solid 1px #dddddd",
           marginBottom: "0.5em",
+          ...cms,
         }}
       >
         <b>Case Status App iFrame</b>
       </div>
+      {vrrSubmitted && (
+        <div
+          style={{
+            backgroundColor: "#efefef",
+            padding: "5em",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            border: "solid 1px #dddddd",
+            marginBottom: "0.5em",
+            ...contactApp,
+          }}
+        >
+          <b>VRR Status iFrame</b>
+        </div>
+      )}
     </div>
   );
 }

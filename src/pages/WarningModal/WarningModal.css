@@ -1,0 +1,31 @@
+.overlay {
+  z-index: 100;
+  position: fixed;
+  height: 100vh;
+  width: 100vw;
+  background-color: rgb(0, 0, 0, 0.4);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal {
+  z-index: 200;
+  background-color: white;
+  padding: 3rem;
+  border-radius: 1em;
+  height: 50vh;
+  width: 50vw;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.button-box {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.list {
+  line-height: 2em;
+}

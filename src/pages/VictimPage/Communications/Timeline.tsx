@@ -17,14 +17,23 @@ function TimelineItem({
   index,
   type,
 }: Communication & { index: number }) {
+  const { cms, enriched, contactApp, ddei } = useContext(ThemeContext);
   //@ts-ignore
   const timeString = dayjs(date).format("LLLL");
   return (
-    <div className="moj-timeline__item" key={index}>
+    <div
+      key={index}
+      className={"moj-timeline__item"}
+      style={type === "VRR" ? contactApp : undefined}
+    >
       <div className="moj-timeline__header">
         <h2 className="moj-timeline__title">{type}</h2>
 
-        <Tag tint={"GREEN"}>Communication</Tag>
+        {type === "VRR" ? (
+          <Tag tint={"PURPLE"}>VRR Update</Tag>
+        ) : (
+          <Tag tint={"GREEN"}>Communication</Tag>
+        )}
 
         <p className="moj-timeline__byline" style={{ marginLeft: "0.5em" }}>
           updated by {updater}

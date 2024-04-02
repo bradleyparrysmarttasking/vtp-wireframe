@@ -24,7 +24,8 @@ const PAGE_SIZE = 20;
 function TableRow({ victim, hasTask }: { victim: Victim; hasTask: any }) {
   const navigate = useNavigate();
   const { ddei, enriched } = useContext(ThemeContext);
-  const { fullName, classification, outstandingTasks, victimId } = victim;
+  const { fullName, classification, outstandingTasks, victimId, vrrSubmitted } =
+    victim;
   const tagColor = classification === "Universal" ? "BLUE" : "GREEN";
 
   const {
@@ -65,7 +66,21 @@ function TableRow({ victim, hasTask }: { victim: Victim; hasTask: any }) {
             style={{
               height: 10,
               width: 10,
-              backgroundColor: "red",
+              backgroundColor: "#e06666",
+              borderRadius: "50%",
+              display: "inline-block",
+              marginLeft: "0.5em",
+            }}
+          ></div>
+        ) : (
+          ""
+        )}
+        {vrrSubmitted ? (
+          <div
+            style={{
+              height: 10,
+              width: 10,
+              backgroundColor: "#d5a6bd",
               borderRadius: "50%",
               display: "inline-block",
               marginLeft: "0.5em",
@@ -115,7 +130,8 @@ function AllVictims() {
     return victims
       .filter((victim) => {
         if (checked && victim.isVictim === false) return false;
-        if (actions && !taskObject[victim.id]) return false;
+        if (actions && !taskObject[victim.id] && !victim.vrrSubmitted)
+          return false;
         if (!search) return true;
         return (
           victim.fullName.toLowerCase().includes(lowerSearch) ||
@@ -179,7 +195,7 @@ function AllVictims() {
               marginRight: "0.5em",
             }}
           >
-            Action Required
+            Action / VRR
           </Checkbox>
         </GridCol>
       </GridRow>

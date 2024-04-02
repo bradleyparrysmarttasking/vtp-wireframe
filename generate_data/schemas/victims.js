@@ -82,6 +82,10 @@ export const Victims = (inputObject) => {
 
       const count = faker.helpers.maybe(() => 2, { probability: 0.1 }) ?? 1;
 
+      const vrrSubmitted = isVictim
+        ? faker.helpers.maybe(() => true, { probability: 0.1 }) ?? false
+        : false;
+
       const caseObjects = inputObject.Case[index]
         ? [inputObject.Case[index]]
         : faker.helpers.arrayElements(inputObject.Case, {
@@ -102,7 +106,7 @@ export const Victims = (inputObject) => {
         faker.helpers.maybe(() => true, { probability: 0.15 }) ?? false;
 
       const classification = isVictim
-        ? caseIds[0].type === "RASSO"
+        ? caseObjects[0].type === "RASSO"
           ? "Enhanced"
           : "Universal"
         : "";
@@ -218,6 +222,7 @@ export const Victims = (inputObject) => {
         crisisHandlingPolicyActivated,
         isVictim,
         caseUrns,
+        vrrSubmitted,
       };
     },
   };

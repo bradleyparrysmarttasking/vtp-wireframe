@@ -50,6 +50,7 @@ export type Victim = {
   caseIds: string[];
   caseUrns: string[];
   isVictim: boolean;
+  vrrSubmitted: boolean;
 };
 
 export type Communication = {

@@ -15,6 +15,7 @@ export default function Communications({
   caseObjects: Case[];
 }) {
   const navigate = useNavigate();
+
   return (
     <SectionBox
       title={<H2>Communications Timeline</H2>}

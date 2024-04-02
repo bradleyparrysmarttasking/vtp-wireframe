@@ -8,26 +8,27 @@ export const Communications = (inputObject) => {
     numberOfRecords: NUM_COMMS,
     createFunction: ({ index }) => {
       const id = faker.string.uuid();
+
+      const caseObject =
+        inputObject.Case[index] ?? faker.helpers.arrayElement(inputObject.Case);
+      const { id: caseId } = caseObject;
+      const victim = faker.helpers.arrayElement(
+        inputObject.Victim.filter((victim) => victim.caseIds.includes(caseId))
+      );
+      const { id: victimId, vrrSubmitted } = victim;
+
       const type = faker.helpers.arrayElement([
         "Letter",
         "Email",
         "Meeting",
         "Phone",
+        vrrSubmitted ? "VRR" : "Letter",
       ]);
       const title = faker.lorem.words();
       const updater = "Joe Bloggs";
       const detail = faker.lorem.paragraph();
 
       const documents = type === "Letter" ? ["letter.pdf"] : [];
-
-      const caseObject =
-        inputObject.Case[index] ?? faker.helpers.arrayElement(inputObject.Case);
-      const caseId = caseObject.id;
-
-      const victim = faker.helpers.arrayElement(
-        inputObject.Victim.filter((victim) => victim.caseIds.includes(caseId))
-      );
-      const victimId = victim.id;
 
       const date = faker.date.between({
         from: caseObject.timeline[0].date,

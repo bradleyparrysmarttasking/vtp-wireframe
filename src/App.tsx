@@ -30,6 +30,7 @@ import ThemeContext from "./context/ThemeContext";
 import AllWitnesses from "./pages/AllWitnesses/AllWitnesses";
 import ImportCase from "./pages/ImportCase/ImportCase";
 import Home from "./pages/Home";
+import WarningModal from "./pages/WarningModal/WarningModal";
 
 const themeObject = {
   cms: { backgroundColor: "#c9daf8" },
@@ -82,6 +83,7 @@ function App() {
               }
         }
       >
+        <WarningModal />
         <div style={{ minHeight: "100vh" }}>
           <button
             style={{ position: "fixed", top: 5, right: 10 }}

@@ -45,5 +45,6 @@ export default function useVictimPage() {
     cms,
     enriched,
     ddei,
+    contactApp,
   };
 }
