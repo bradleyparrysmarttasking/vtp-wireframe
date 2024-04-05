@@ -2,7 +2,7 @@ import { Button, H2, WarningText } from "govuk-react";
 import "./WarningModal.css";
 import { useState } from "react";
 
-export default function WarningModal() {
+export default function WarningModal({ signOut }: any) {
   const [open, setOpen] = useState(true);
   if (!open) return null;
   return (
@@ -26,6 +26,7 @@ export default function WarningModal() {
           </ul>
         </div>
         <div className="button-box">
+          <Button onClick={() => signOut()}>Sign Out</Button>
           <Button onClick={() => setOpen(false)}>Close</Button>
         </div>
       </div>

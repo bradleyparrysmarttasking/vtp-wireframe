@@ -1,0 +1,20 @@
+{
+  "dev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-vtpwireframe-dev-101915-authRole",
+      "UnauthRoleArn": "arn:aws:iam::321914516419:role/amplify-vtpwireframe-dev-101915-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::321914516419:role/amplify-vtpwireframe-dev-101915-authRole",
+      "Region": "eu-west-2",
+      "DeploymentBucketName": "amplify-vtpwireframe-dev-101915-deployment",
+      "UnauthRoleName": "amplify-vtpwireframe-dev-101915-unauthRole",
+      "StackName": "amplify-vtpwireframe-dev-101915",
+      "StackId": "arn:aws:cloudformation:eu-west-2:321914516419:stack/amplify-vtpwireframe-dev-101915/31bb6bd0-f325-11ee-bd63-0ac69713b9b3",
+      "AmplifyAppId": "d3ggcsfb6timrh"
+    },
+    "categories": {
+      "auth": {
+        "vtpwireframedfa5b781": {}
+      }
+    }
+  }
+}

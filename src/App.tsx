@@ -1,4 +1,7 @@
 import { useState } from "react";
+import { Amplify } from "aws-amplify";
+import { Authenticator } from "@aws-amplify/ui-react";
+import "@aws-amplify/ui-react/styles.css";
 import {
   BrowserRouter as Router,
   Routes,
@@ -32,6 +35,9 @@ import ImportCase from "./pages/ImportCase/ImportCase";
 import Home from "./pages/Home";
 import WarningModal from "./pages/WarningModal/WarningModal";
 
+import awsExports from "./aws-exports";
+Amplify.configure(awsExports);
+
 const themeObject = {
   cms: { backgroundColor: "#c9daf8" },
   ddei: { backgroundColor: "#9fc5e8" },
@@ -54,158 +60,172 @@ function App() {
   const [tasks, setTasks] = useState<Task[]>(initialTaskData.data);
 
   return (
-    <DataContext.Provider
-      value={{
-        victims,
-        setVictims,
-        cases,
-        setCases,
-        communications,
-        setCommunications,
-        defendants,
-        setDefendants,
-        contacts,
-        setContacts,
-        tasks,
-        setTasks,
-      }}
-    >
-      <ThemeContext.Provider
-        value={
-          showDataSource
-            ? themeObject
-            : {
-                cms: {},
-                ddei: {},
-                enriched: {},
-                contactApp: {},
-                mg: {},
-              }
-        }
-      >
-        <WarningModal />
-        <div style={{ minHeight: "100vh" }}>
-          <button
-            style={{ position: "fixed", top: 5, right: 10 }}
-            onClick={() =>
-              setShowDataSource((showDataSource) => !showDataSource)
+    <Authenticator hideSignUp={true} variation="modal">
+      {({ signOut, user }) => (
+        <DataContext.Provider
+          value={{
+            victims,
+            setVictims,
+            cases,
+            setCases,
+            communications,
+            setCommunications,
+            defendants,
+            setDefendants,
+            contacts,
+            setContacts,
+            tasks,
+            setTasks,
+          }}
+        >
+          <ThemeContext.Provider
+            value={
+              showDataSource
+                ? themeObject
+                : {
+                    cms: {},
+                    ddei: {},
+                    enriched: {},
+                    contactApp: {},
+                    mg: {},
+                  }
             }
           >
-            Toggle Data Sources
-          </button>
-          {showDataSource && (
-            <div
-              style={{
-                position: "fixed",
-                top: 40,
-                right: 10,
-                backgroundColor: "white",
-                padding: "1em",
-                borderRadius: "1em",
-                border: "1px solid #dddddd",
-                zIndex: 400,
-              }}
-            >
-              <div style={{ display: "grid", gridTemplateColumns: "1fr 3fr" }}>
-                <div
-                  style={{ ...themeObject.cms, height: "1em", width: "1em" }}
-                ></div>
-                <div>CMS</div>
-                <div
-                  style={{ ...themeObject.ddei, height: "1em", width: "1em" }}
-                ></div>
-                <div>DDEI Available</div>
+            <WarningModal signOut={signOut} />
+            <div style={{ minHeight: "100vh" }}>
+              <button
+                style={{ position: "fixed", top: 5, right: 10 }}
+                onClick={() =>
+                  setShowDataSource((showDataSource) => !showDataSource)
+                }
+              >
+                Toggle Data Sources
+              </button>
+              {showDataSource && (
                 <div
                   style={{
-                    ...themeObject.contactApp,
-                    height: "1em",
-                    width: "1em",
+                    position: "fixed",
+                    top: 40,
+                    right: 10,
+                    backgroundColor: "white",
+                    padding: "1em",
+                    borderRadius: "1em",
+                    border: "1px solid #dddddd",
+                    zIndex: 400,
                   }}
-                ></div>
-                <div>Contact App</div>
-                <div
-                  style={{
-                    ...themeObject.enriched,
-                    height: "1em",
-                    width: "1em",
-                  }}
-                ></div>
-                <div>Enrichment Needed</div>
-                <div
-                  style={{
-                    ...themeObject.mg,
-                    height: "1em",
-                    width: "1em",
-                  }}
-                ></div>
-                <div>MG Form</div>
-              </div>
+                >
+                  <div
+                    style={{ display: "grid", gridTemplateColumns: "1fr 3fr" }}
+                  >
+                    <div
+                      style={{
+                        ...themeObject.cms,
+                        height: "1em",
+                        width: "1em",
+                      }}
+                    ></div>
+                    <div>CMS</div>
+                    <div
+                      style={{
+                        ...themeObject.ddei,
+                        height: "1em",
+                        width: "1em",
+                      }}
+                    ></div>
+                    <div>DDEI Available</div>
+                    <div
+                      style={{
+                        ...themeObject.contactApp,
+                        height: "1em",
+                        width: "1em",
+                      }}
+                    ></div>
+                    <div>Contact App</div>
+                    <div
+                      style={{
+                        ...themeObject.enriched,
+                        height: "1em",
+                        width: "1em",
+                      }}
+                    ></div>
+                    <div>Enrichment Needed</div>
+                    <div
+                      style={{
+                        ...themeObject.mg,
+                        height: "1em",
+                        width: "1em",
+                      }}
+                    ></div>
+                    <div>MG Form</div>
+                  </div>
+                </div>
+              )}
+              <SkipLink href="#main-content">Skip to main content</SkipLink>
+              <TopNav
+                company={
+                  <TopNav.Anchor href="https://example.com" target="new">
+                    <TopNav.IconTitle icon={<CPS />}>CPS</TopNav.IconTitle>
+                  </TopNav.Anchor>
+                }
+                serviceTitle="Victim Focused Case View"
+              />
+              <Main /* @ts-ignore */
+                style={{
+                  minHeight: "calc(100vh - 1em - 62px - 111px)",
+                  paddingTop: "1em",
+                }}
+              >
+                <Router>
+                  <Routes>
+                    <Route
+                      path="/home/victims"
+                      element={
+                        <Home>
+                          <AllVictims />
+                        </Home>
+                      }
+                    />
+                    <Route
+                      path="/home/witnesses"
+                      element={
+                        <Home>
+                          <AllWitnesses />
+                        </Home>
+                      }
+                    />
+                    <Route
+                      path="/home/case-search"
+                      element={
+                        <Home>
+                          <ImportCase />
+                        </Home>
+                      }
+                    />
+                    <Route
+                      path="/home/victims/:victimId"
+                      element={<VictimPage />}
+                    />
+                    <Route
+                      path="/home/victims/:victimId/communications/create"
+                      element={<CreateCommunication />}
+                    />
+                    <Route
+                      path="/home/victims/:victimId/personal/update"
+                      element={<PersonalDetailsForm />}
+                    />
+                    <Route
+                      path="/"
+                      element={<Navigate replace to={"/home/victims"} />}
+                    />
+                  </Routes>
+                </Router>
+              </Main>
+              <Footer />
             </div>
-          )}
-          <SkipLink href="#main-content">Skip to main content</SkipLink>
-          <TopNav
-            company={
-              <TopNav.Anchor href="https://example.com" target="new">
-                <TopNav.IconTitle icon={<CPS />}>CPS</TopNav.IconTitle>
-              </TopNav.Anchor>
-            }
-            serviceTitle="Victim Focused Case View"
-          />
-          <Main /* @ts-ignore */
-            style={{
-              minHeight: "calc(100vh - 1em - 62px - 111px)",
-              paddingTop: "1em",
-            }}
-          >
-            <Router>
-              <Routes>
-                <Route
-                  path="/home/victims"
-                  element={
-                    <Home>
-                      <AllVictims />
-                    </Home>
-                  }
-                />
-                <Route
-                  path="/home/witnesses"
-                  element={
-                    <Home>
-                      <AllWitnesses />
-                    </Home>
-                  }
-                />
-                <Route
-                  path="/home/case-search"
-                  element={
-                    <Home>
-                      <ImportCase />
-                    </Home>
-                  }
-                />
-                <Route
-                  path="/home/victims/:victimId"
-                  element={<VictimPage />}
-                />
-                <Route
-                  path="/home/victims/:victimId/communications/create"
-                  element={<CreateCommunication />}
-                />
-                <Route
-                  path="/home/victims/:victimId/personal/update"
-                  element={<PersonalDetailsForm />}
-                />
-                <Route
-                  path="/"
-                  element={<Navigate replace to={"/home/victims"} />}
-                />
-              </Routes>
-            </Router>
-          </Main>
-          <Footer />
-        </div>
-      </ThemeContext.Provider>
-    </DataContext.Provider>
+          </ThemeContext.Provider>
+        </DataContext.Provider>
+      )}
+    </Authenticator>
   );
 }
 
