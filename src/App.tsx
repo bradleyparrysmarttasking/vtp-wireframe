@@ -1,7 +1,5 @@
 import { useState } from "react";
-import { Amplify } from "aws-amplify";
-import { Authenticator } from "@aws-amplify/ui-react";
-import "@aws-amplify/ui-react/styles.css";
+
 import {
   BrowserRouter as Router,
   Routes,
@@ -34,9 +32,7 @@ import AllWitnesses from "./pages/AllWitnesses/AllWitnesses";
 import ImportCase from "./pages/ImportCase/ImportCase";
 import Home from "./pages/Home";
 import WarningModal from "./pages/WarningModal/WarningModal";
-
-import awsExports from "./aws-exports";
-Amplify.configure(awsExports);
+import { Authenticator, useAuthenticator } from "@aws-amplify/ui-react";
 
 const themeObject = {
   cms: { backgroundColor: "#c9daf8" },
@@ -59,9 +55,13 @@ function App() {
   const [contacts, setContacts] = useState<Contact[]>(initialContactData.data);
   const [tasks, setTasks] = useState<Task[]>(initialTaskData.data);
 
+  const { authStatus, signOut } = useAuthenticator((context) => [
+    context.authStatus,
+  ]);
+
   return (
-    <Authenticator hideSignUp={true} variation="modal">
-      {({ signOut, user }) => (
+    <>
+      {authStatus === "configuring" ? null : authStatus === "authenticated" ? (
         <DataContext.Provider
           value={{
             victims,
@@ -217,6 +217,10 @@ function App() {
                       path="/"
                       element={<Navigate replace to={"/home/victims"} />}
                     />
+                    <Route
+                      path="/signin"
+                      element={<Navigate replace to={"/home/victims"} />}
+                    />
                   </Routes>
                 </Router>
               </Main>
@@ -224,8 +228,18 @@ function App() {
             </div>
           </ThemeContext.Provider>
         </DataContext.Provider>
+      ) : (
+        <Router>
+          <Routes>
+            <Route
+              path="/signin"
+              element={<Authenticator hideSignUp={true} variation="modal" />}
+            />
+            <Route path="/*" element={<Navigate replace to={`/signin`} />} />
+          </Routes>
+        </Router>
       )}
-    </Authenticator>
+    </>
   );
 }
 
