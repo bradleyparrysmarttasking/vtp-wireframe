@@ -3,7 +3,7 @@
   min-height: 200px !important;
 }
 
-.iLgLow {
+[type="radio"] {
   opacity: 1 !important;
 }
 

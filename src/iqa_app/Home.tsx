@@ -12,10 +12,12 @@ import {
 import "./iqa_css.css";
 import { QuestionStepper } from "./QuestionStepper";
 import {
+  ActionIcon,
   Alert,
   Badge,
   Group,
   Paper,
+  Popover,
   SimpleGrid,
   Stack,
   Text,
@@ -24,6 +26,7 @@ import { questionData } from "./questionData";
 import { useState } from "react";
 import { ScoreBadge } from "./ScoreBadge";
 import { DocumentViewer } from "./DocumentViewer";
+import { IconInfoCircle } from "@tabler/icons-react";
 
 export function Home() {
   const [currentQuestion, setCurrentQuestion] = useState(10);
@@ -56,10 +59,18 @@ export function Home() {
         </Group>
       </Group>
       <QuestionStepper active={currentQuestion} />
-      <Group>
+      <Group position="apart">
         <Heading as="h2" size={24}>
           {currentQuestionData.question}
         </Heading>
+        <Popover position="bottom-end" withArrow>
+          <Popover.Target>
+            <ActionIcon radius="xl" color="blue">
+              <IconInfoCircle />
+            </ActionIcon>
+          </Popover.Target>
+          <Popover.Dropdown>{currentQuestionData.guidance}</Popover.Dropdown>
+        </Popover>
       </Group>
       {/* <Details summary="Guidance">{currentQuestionData.guidance}</Details> */}
       <Alert
@@ -83,14 +94,18 @@ export function Home() {
       >
         <SimpleGrid cols={2}>
           <Stack spacing={0}>
-            <Text fw={500}>Areas of good practice</Text>
+            <Text td="underline" fw={500}>
+              Areas of good practice
+            </Text>
             <Text>
               Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam,
               quos.
             </Text>
           </Stack>
           <Stack spacing={0}>
-            <Text fw={500}>Areas for improvement</Text>
+            <Text td="underline" fw={500}>
+              Areas for improvement
+            </Text>
             <Text>
               Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam,
               quos.
@@ -107,7 +122,7 @@ export function Home() {
         </GridCol>
         <GridCol setWidth="one-third">
           <Stack>
-            <MultiChoice label="QuestionResponse">
+            <MultiChoice label="Question Response">
               <Radio inline name="group1">
                 Met
               </Radio>
@@ -135,11 +150,25 @@ export function Home() {
                 //   buttonHoverColour="#ffdd00"
                 //   buttonShadowColour="#f47738"
                 buttonTextColour="#0b0c0c"
-                onClick={() => setCurrentQuestion(currentQuestion - 1)}
+                onClick={() =>
+                  setCurrentQuestion(
+                    currentQuestion > 0 ? currentQuestion - 1 : 0
+                  )
+                }
+                disabled={currentQuestion === 0}
               >
                 Previous
               </Button>
-              <Button onClick={() => setCurrentQuestion(currentQuestion + 1)}>
+              <Button
+                onClick={() =>
+                  setCurrentQuestion(
+                    currentQuestion < questionData.length - 1
+                      ? currentQuestion + 1
+                      : currentQuestion
+                  )
+                }
+                disabled={currentQuestion === questionData.length - 1}
+              >
                 Next
               </Button>
             </Group>

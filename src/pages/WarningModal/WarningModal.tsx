@@ -11,7 +11,7 @@ export default function WarningModal({ signOut }: any) {
         <div>
           <WarningText>Disclaimer</WarningText>
           <ul className="list">
-            <li>
+            {/* <li>
               This is a proof of concept and not all fields and functions
               identified during the discovery process have been incorporated
               here; however, we are confident that this representation offers
@@ -22,7 +22,15 @@ export default function WarningModal({ signOut }: any) {
             </li>
             <li>
               Data sources can be toggled using the button in the top right.
+            </li> */}
+
+            <li>
+              This is a proof of concept and not all functions identified during
+              the discovery process have been incorporated here; however, we are
+              confident that this representation offers insight into the
+              potential structure of a future state.
             </li>
+            <li>All data contained is fake.</li>
           </ul>
         </div>
         <div className="button-box">
