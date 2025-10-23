@@ -53,6 +53,16 @@ export const questionData = [
     question: "Question 11",
     guidance: <p>Guidance for question 11</p>,
     score: 2,
+    documents: [
+      {
+        key: "documents/Disclosure_Management_Document.pdf",
+        label: "Disclosure Management Document",
+      },
+      {
+        key: "documents/Disclosure_Record_Sheet.pdf",
+        label: "Disclosure Record Sheet",
+      },
+    ],
   },
   {
     question: "Question 12",

@@ -1,7 +1,9 @@
+import { Box } from "@mantine/core";
 import { Tabs } from "govuk-react";
 import { useState } from "react";
+import { DocumentFrame } from "./DocumentFrame";
 
-export function DocumentViewer() {
+export function DocumentViewer({ documents = [] }: { documents: any[] }) {
   const [tabIndex, setHooksTabIndex] = useState(0);
 
   const handleTabChange = (newTabIndex) => setHooksTabIndex(newTabIndex);
@@ -10,39 +12,39 @@ export function DocumentViewer() {
     return handleTabChange(index);
   }
 
-  const tabs = [
-    {
-      label: "Document",
-      content: "Tab content",
-      href: "#document",
-    },
-    {
-      label: "Another",
-      content: "Another tab content",
-      href: "#another",
-    },
-  ];
+  //   const tabs = [
+  //     {
+  //       label: "Disclosure Management Document",
+  //       content: "Tab content",
+  //       href: "#document",
+  //     },
+  //     {
+  //       label: "Disclosure Record Sheet",
+  //       content: "Another tab content",
+  //       href: "#another",
+  //     },
+  //   ];
 
   return (
     <Tabs>
       <Tabs.Title>Content</Tabs.Title>
       <Tabs.List style={{ display: "flex" }}>
-        {tabs.map((tab, index) => (
+        {documents.map((document, index) => (
           <Tabs.Tab
-            key={tab.href}
+            key={document.key}
             onClick={(event) => hooksHandleClick({ event, index })}
             selected={tabIndex === index}
             // href={href}
             style={{ cursor: "pointer" }}
           >
-            {tab.label}
+            {document.label}
           </Tabs.Tab>
         ))}
       </Tabs.List>
 
-      {tabs.map((tab, index) => (
+      {documents.map((document, index) => (
         <Tabs.Panel key={index} selected={tabIndex === index} id={index}>
-          {tab.content}
+          <DocumentFrame document={document} />
         </Tabs.Panel>
       ))}
     </Tabs>

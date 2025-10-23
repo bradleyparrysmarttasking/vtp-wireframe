@@ -11,11 +11,10 @@ import { Home } from "./iqa_app/Home";
 import WarningModal from "./pages/WarningModal/WarningModal";
 import { useAuthenticator } from "@aws-amplify/ui-react";
 import { MantineProvider } from "@mantine/core";
+import { DocumentUpload } from "./components/DocumentUploads/DocumentUpload";
 
 function IQAApp() {
-  const { authStatus, signOut } = useAuthenticator((context) => [
-    context.authStatus,
-  ]);
+  const { signOut } = useAuthenticator((context) => [context.authStatus]);
 
   return (
     <MantineProvider withGlobalStyles withNormalizeCSS>
@@ -47,6 +46,7 @@ function IQAApp() {
                 path="/signin"
                 element={<Navigate replace to={"/submit-iqa"} />}
               />
+              <Route path="/document-upload" element={<DocumentUpload />} />
             </Routes>
           </Router>
         </Main>

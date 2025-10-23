@@ -118,7 +118,7 @@ export function Home() {
           <Heading as="h3" size={16}>
             Relevant Case Material
           </Heading>
-          <DocumentViewer />
+          <DocumentViewer documents={currentQuestionData.documents} />
         </GridCol>
         <GridCol setWidth="one-third">
           <Stack>
