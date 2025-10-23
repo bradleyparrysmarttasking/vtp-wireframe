@@ -15,22 +15,20 @@ function App() {
 
   return (
     <>
-      {
-        /* authStatus === "configuring" ? null : authStatus === "authenticated" */ true ? (
-          // <VTPApp />
-          <IQAApp />
-        ) : (
-          <Router>
-            <Routes>
-              <Route
-                path="/signin"
-                element={<Authenticator hideSignUp={true} variation="modal" />}
-              />
-              <Route path="/*" element={<Navigate replace to={`/signin`} />} />
-            </Routes>
-          </Router>
-        )
-      }
+      {authStatus === "configuring" ? null : authStatus === "authenticated" ? (
+        // <VTPApp />
+        <IQAApp />
+      ) : (
+        <Router>
+          <Routes>
+            <Route
+              path="/signin"
+              element={<Authenticator hideSignUp={true} variation="modal" />}
+            />
+            <Route path="/*" element={<Navigate replace to={`/signin`} />} />
+          </Routes>
+        </Router>
+      )}
     </>
   );
 }
