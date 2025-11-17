@@ -18,6 +18,7 @@ import {
   Box,
   Grid,
   Group,
+  Loader,
   Paper,
   Popover,
   SimpleGrid,
@@ -132,12 +133,16 @@ export function Home() {
         title={
           <Group position="apart" style={{ width: "100%" }}>
             <Text>AI Assistant</Text>
-            <ScoreBadge
-              score={currentQuestionScore}
-              text={`Overall Question Score: `}
-              size="lg"
-              variant="filled"
-            />
+            {fakeLoading ? (
+              <Loader size="md" color="blue" />
+            ) : (
+              <ScoreBadge
+                score={currentQuestionScore}
+                text={`Overall Question Score: `}
+                size="lg"
+                variant="filled"
+              />
+            )}
           </Group>
         }
         styles={{
@@ -146,97 +151,102 @@ export function Home() {
           },
         }}
       >
-        <SimpleGrid cols={2}>
-          <Stack spacing={"xs"}>
-            {Object.values(currentQuestionScoreObject.ratings).map(
-              (rating: { score: number; rationale: string }, index: number) => (
-                <Stack spacing={0}>
-                  <Group>
-                    <Text fw={500} size={"xs"} td="underline">
-                      {snakeToProperCase(
-                        Object.keys(currentQuestionScoreObject.ratings)[index]
-                      )}
+        {!fakeLoading && (
+          <SimpleGrid cols={2}>
+            <Stack spacing={"xs"}>
+              {Object.values(currentQuestionScoreObject.ratings).map(
+                (
+                  rating: { score: number; rationale: string },
+                  index: number
+                ) => (
+                  <Stack spacing={0}>
+                    <Group>
+                      <Text fw={500} size={"xs"} td="underline">
+                        {snakeToProperCase(
+                          Object.keys(currentQuestionScoreObject.ratings)[index]
+                        )}
+                      </Text>
+                      <ScoreBadge
+                        score={rating.score}
+                        size={"xs"}
+                        variant="filled"
+                      />
+                    </Group>
+                    <Text size={"xs"}>{rating.rationale}</Text>
+                  </Stack>
+                )
+              )}
+            </Stack>
+            <Stack>
+              <Stack spacing={0}>
+                <Group noWrap position="apart">
+                  <Text td="underline" fw={500}>
+                    Areas of good practice
+                  </Text>
+                  <Group spacing={"xs"}>
+                    <Text size="xs" c="dimmed">
+                      Copy to answer
                     </Text>
-                    <ScoreBadge
-                      score={rating.score}
-                      size={"xs"}
-                      variant="filled"
-                    />
+                    <ActionIcon
+                      radius="xl"
+                      color="blue"
+                      onClick={() => {
+                        setGoodPractice(
+                          "- " +
+                            currentQuestionScoreObject.effective_practice.join(
+                              "\n\n- "
+                            )
+                        );
+                      }}
+                    >
+                      <IconCopy />
+                    </ActionIcon>
                   </Group>
-                  <Text size={"xs"}>{rating.rationale}</Text>
-                </Stack>
-              )
-            )}
-          </Stack>
-          <Stack>
-            <Stack spacing={0}>
-              <Group noWrap position="apart">
-                <Text td="underline" fw={500}>
-                  Areas of good practice
-                </Text>
-                <Group spacing={"xs"}>
-                  <Text size="xs" c="dimmed">
-                    Copy to answer
-                  </Text>
-                  <ActionIcon
-                    radius="xl"
-                    color="blue"
-                    onClick={() => {
-                      setGoodPractice(
-                        "- " +
-                          currentQuestionScoreObject.effective_practice.join(
-                            "\n\n- "
-                          )
-                      );
-                    }}
-                  >
-                    <IconCopy />
-                  </ActionIcon>
                 </Group>
-              </Group>
-              <ul>
-                {currentQuestionScoreObject.effective_practice.map(
-                  (strength: string) => (
-                    <li key={strength}>{strength}</li>
-                  )
-                )}
-              </ul>
-            </Stack>
-            <Stack spacing={0}>
-              <Group noWrap position="apart">
-                <Text td="underline" fw={500}>
-                  Areas for improvement
-                </Text>
-                <Group spacing={"xs"}>
-                  <Text size="xs" c="dimmed">
-                    Copy to answer
+                <ul>
+                  {currentQuestionScoreObject.effective_practice.map(
+                    (strength: string) => (
+                      <li key={strength}>{strength}</li>
+                    )
+                  )}
+                </ul>
+              </Stack>
+              <Stack spacing={0}>
+                <Group noWrap position="apart">
+                  <Text td="underline" fw={500}>
+                    Areas for improvement
                   </Text>
-                  <ActionIcon
-                    radius="xl"
-                    color="blue"
-                    onClick={() => {
-                      setImprovement(
-                        "- " +
-                          currentQuestionScoreObject.improvement_opportunities.join(
-                            "\n\n- "
-                          )
-                      );
-                    }}
-                  >
-                    <IconCopy />
-                  </ActionIcon>
+                  <Group spacing={"xs"}>
+                    <Text size="xs" c="dimmed">
+                      Copy to answer
+                    </Text>
+                    <ActionIcon
+                      radius="xl"
+                      color="blue"
+                      onClick={() => {
+                        setImprovement(
+                          "- " +
+                            currentQuestionScoreObject.improvement_opportunities.join(
+                              "\n\n- "
+                            )
+                        );
+                      }}
+                    >
+                      <IconCopy />
+                    </ActionIcon>
+                  </Group>
                 </Group>
-              </Group>
-              <ul>
-                {currentQuestionScoreObject.improvement_opportunities.map(
-                  (opportunity: string) => (
-                    <li key={opportunity}>{opportunity}</li>
-                  )
-                )}
-              </ul>
+                <ul>
+                  {currentQuestionScoreObject.improvement_opportunities.map(
+                    (opportunity: string) => (
+                      <li key={opportunity}>{opportunity}</li>
+                    )
+                  )}
+                </ul>
+              </Stack>
             </Stack>
-          </Stack>
-        </SimpleGrid>
+          </SimpleGrid>
+        )}
       </Alert>
       <GridRow>
         <GridCol setWidth="two-thirds">

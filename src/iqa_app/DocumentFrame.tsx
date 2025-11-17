@@ -23,7 +23,7 @@ export function DocumentFrame({ document }: { document: any }) {
   }, [document.key]);
 
   return (
-    <Box style={{ width: "100%", height: "80vh", position: "relative" }}>
+    <Box style={{ width: "100%", height: "100%", position: "relative" }}>
       <LoadingOverlay visible={isLoading} />
       <iframe
         src={

@@ -19,7 +19,7 @@ function IQAApp() {
   return (
     <MantineProvider withGlobalStyles withNormalizeCSS>
       <DataContext.Provider value={null}>
-        <WarningModal signOut={signOut} />
+        {/* <WarningModal signOut={signOut} /> */}
         <SkipLink href="#main-content">Skip to main content</SkipLink>
         <TopNav
           company={
