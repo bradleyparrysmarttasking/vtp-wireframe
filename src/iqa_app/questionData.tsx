@@ -1,3 +1,5 @@
+import { Stack, Text } from "@mantine/core";
+
 export const questionData = [
   {
     question: "Question 1",
@@ -50,17 +52,52 @@ export const questionData = [
     score: 1,
   },
   {
-    question: "Question 11",
-    guidance: <p>Guidance for question 11</p>,
+    question:
+      "11. The prosecutor has drafted a good quality Disclosure Record Sheet (DRS) and Disclosure Management Document (DMD) (where appropriate) so that the rationale for disclosure decisions and our disclosure strategy is clear and understandable.",
+    guidance: (
+      <Stack maw={500}>
+        <Text td="underline" fw={500} c="blue">
+          Issues to address
+        </Text>
+        <ul>
+          <li>DRS not used, where appropriate</li>
+          <li>DRS incomplete - key entries missing</li>
+          <li>DRS inaccurate</li>
+          <li>DMD not used, where appropriate</li>
+          <li>DMD not reviews/updated, where appropriate</li>
+          <li>DMD not shared</li>
+          <li>Where DRS/DMD not required, inadequate file endorsements</li>
+        </ul>
+        <Text td="underline" fw={500} c="blue">
+          Guidance
+        </Text>
+        <Text>
+          This question is concerned with the recording of disclosure decisions.
+        </Text>
+        <Text>
+          Managers should refer to the "Disclosure Record Sheets: Key Issues"
+          document for DRS. In relation to DMD, they should have regard to
+          templated provided on the intranet, as well as available guidance.
+        </Text>
+      </Stack>
+    ),
     score: 2,
     documents: [
+      // {
+      //   key: "documents/Disclosure_Management_Document.pdf",
+      //   label: "Disclosure Management Document",
+      // },
+      // {
+      //   key: "documents/Disclosure_Record_Sheet.pdf",
+      //   label: "Disclosure Record Sheet",
+      // },
       {
-        key: "documents/Disclosure_Management_Document.pdf",
-        label: "Disclosure Management Document",
+        key: "documents/DMD_Good.pdf",
+        label: "DMD",
       },
       {
-        key: "documents/Disclosure_Record_Sheet.pdf",
-        label: "Disclosure Record Sheet",
+        key: "documents/DRS_Good.pdf",
+        label: "DRS",
       },
     ],
   },

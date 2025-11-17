@@ -28,7 +28,7 @@ export function DocumentFrame({ document }: { document: any }) {
       <iframe
         src={
           documentUrl
-            ? documentUrl + "#toolbar=0&navpanes=0&scrollbar=0&pagemode=none"
+            ? documentUrl + "#navpanes=0&pagemode=none" //"#toolbar=0&navpanes=0&scrollbar=0&pagemode=none"
             : ""
         }
         style={{ width: "100%", height: "100%", border: "none" }}

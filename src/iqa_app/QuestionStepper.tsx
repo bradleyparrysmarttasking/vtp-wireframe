@@ -1,27 +1,47 @@
-import { Badge, Group, rem } from "@mantine/core";
+import { Badge, Group, Loader, rem } from "@mantine/core";
 import { Stepper } from "@mantine/core";
 import { questionData } from "./questionData";
+import { goodPracticeData } from "./llmOutputData";
 
-export function QuestionStepper({ active }: { active: number }) {
+export function QuestionStepper({
+  fakeLoading,
+  active,
+}: {
+  fakeLoading: boolean;
+  active: number;
+}) {
   return (
     <>
-      <Group position="apart" px={3}>
-        {questionData.map((question) => (
-          <Badge
-            color={
-              question.score >= 4
-                ? "green"
-                : question.score >= 3
-                ? "yellow"
-                : "red"
-            }
-            size="lg"
-          >
-            {question.score}
-          </Badge>
-        ))}
+      <Group position="apart" px={0}>
+        {questionData.map((question, index) => {
+          const questionScoreObject = goodPracticeData[index];
+          const questionScore =
+            Object.values(questionScoreObject.ratings).reduce(
+              (sum: number, rating: { score: number; rationale: string }) =>
+                sum + rating.score,
+              0
+            ) / Object.values(questionScoreObject.ratings).length;
+          if (fakeLoading) {
+            return <Loader size="sm" color="blue" mx="md" key={index} />;
+          }
+          return (
+            <Badge
+              color={
+                questionScore >= 4
+                  ? "green"
+                  : questionScore >= 3
+                  ? "yellow"
+                  : "red"
+              }
+              size="lg"
+            >
+              {questionScore.toFixed(1)}
+            </Badge>
+          );
+        })}
       </Group>
       <Stepper
+        px={5}
         styles={{
           stepBody: {
             display: "none",
@@ -43,24 +63,33 @@ export function QuestionStepper({ active }: { active: number }) {
         }}
         active={active}
       >
-        {questionData.map((question) => (
-          <Stepper.Step
-            label={
-              <Badge
-                color={
-                  question.score >= 4
-                    ? "green"
-                    : question.score >= 3
-                    ? "yellow"
-                    : "red"
-                }
-              >
-                {question.score}
-              </Badge>
-            }
-            //   description={question.question}
-          />
-        ))}
+        {questionData.map((question, index) => {
+          const questionScoreObject = goodPracticeData[index];
+          const questionScore =
+            Object.values(questionScoreObject.ratings).reduce(
+              (sum: number, rating: { score: number; rationale: string }) =>
+                sum + rating.score,
+              0
+            ) / Object.values(questionScoreObject.ratings).length;
+          return (
+            <Stepper.Step
+              label={
+                <Badge
+                  color={
+                    questionScore >= 4
+                      ? "green"
+                      : questionScore >= 3
+                      ? "yellow"
+                      : "red"
+                  }
+                >
+                  {questionScore.toFixed(1)}
+                </Badge>
+              }
+              //   description={question.question}
+            />
+          );
+        })}
       </Stepper>
     </>
   );
