@@ -42,6 +42,7 @@ import { IconArrowLeft, IconCopy, IconInfoCircle } from "@tabler/icons-react";
 import { useQuestions } from "./useQuestions";
 import { ActionsSection } from "./ActionsSection";
 import { useNavigate, useParams } from "react-router-dom";
+import { cases } from "./CaseSelection";
 
 function snakeToProperCase(snake: string): string {
   return snake
@@ -71,6 +72,8 @@ export function Home() {
     guidance: <p>Guidance not found</p>,
     score: 0,
   };
+
+  const currentCase = cases.find((c) => c.category === caseId);
 
   useEffect(() => {
     setTimeout(() => {
@@ -126,9 +129,15 @@ export function Home() {
         </MantineButton>
       </Box>
       <Group position="apart">
-        <Heading as="h1" size={24}>
-          16GH1510125 - Defendant John Doe
-        </Heading>
+        <Stack spacing={0}>
+          <Heading as="h1" size={24}>
+            {currentCase?.urn} - Defendants:{" "}
+            {currentCase?.defendants.join(", ")}
+          </Heading>
+          <Text fw={500} c="dimmed">
+            Prosecutor: {currentCase?.prosecutor}
+          </Text>
+        </Stack>
         <Group>
           <Text fw={500}>Average AI Score:</Text>
           {fakeLoading ? (

@@ -10,7 +10,7 @@ type Case = {
   category: string;
 };
 
-const cases: Case[] = [
+export const cases: Case[] = [
   {
     prosecutor: "John Exemplar",
     defendants: ["Jane Doe", "Jim Doe"],

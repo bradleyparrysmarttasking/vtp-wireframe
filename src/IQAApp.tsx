@@ -42,11 +42,11 @@ function IQAApp() {
               <Route path="/submit-iqa/:case" element={<Home />} />
               <Route
                 path="/"
-                element={<Navigate replace to={"/submit-iqa"} />}
+                element={<Navigate replace to={"/create-iqa"} />}
               />
               <Route
                 path="/signin"
-                element={<Navigate replace to={"/submit-iqa"} />}
+                element={<Navigate replace to={"/create-iqa"} />}
               />
               <Route path="/document-upload" element={<DocumentUpload />} />
             </Routes>
