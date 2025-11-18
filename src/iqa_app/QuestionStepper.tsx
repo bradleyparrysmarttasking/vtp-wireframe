@@ -1,7 +1,15 @@
 import { Badge, Group, Loader, rem } from "@mantine/core";
 import { Stepper } from "@mantine/core";
 import { questionData } from "./questionData";
-import { goodPracticeData } from "./llmOutputData";
+import {
+  exemplar,
+  fair,
+  good,
+  LLMOutputDataEntry,
+  poor,
+} from "./llmOutputData";
+import { useParams } from "react-router-dom";
+import { useMemo } from "react";
 
 export function QuestionStepper({
   fakeLoading,
@@ -10,11 +18,22 @@ export function QuestionStepper({
   fakeLoading: boolean;
   active: number;
 }) {
+  const { case: caseId } = useParams();
+
+  const questionScores: LLMOutputDataEntry[] = useMemo(() => {
+    if (!caseId) return [];
+    if (caseId === "exemplar") return exemplar;
+    if (caseId === "good") return good;
+    if (caseId === "fair") return fair;
+    if (caseId === "poor") return poor;
+    return good;
+  }, [caseId]);
+
   return (
     <>
       <Group position="apart" px={0}>
         {questionData.map((question, index) => {
-          const questionScoreObject = goodPracticeData[index];
+          const questionScoreObject = questionScores[index];
           const questionScore =
             Object.values(questionScoreObject.ratings).reduce(
               (sum: number, rating: { score: number; rationale: string }) =>
@@ -27,9 +46,9 @@ export function QuestionStepper({
           return (
             <Badge
               color={
-                questionScore >= 4
+                questionScore >= 3.5
                   ? "green"
-                  : questionScore >= 3
+                  : questionScore >= 2.25
                   ? "yellow"
                   : "red"
               }
@@ -64,7 +83,7 @@ export function QuestionStepper({
         active={active}
       >
         {questionData.map((question, index) => {
-          const questionScoreObject = goodPracticeData[index];
+          const questionScoreObject = questionScores[index];
           const questionScore =
             Object.values(questionScoreObject.ratings).reduce(
               (sum: number, rating: { score: number; rationale: string }) =>
@@ -76,9 +95,9 @@ export function QuestionStepper({
               label={
                 <Badge
                   color={
-                    questionScore >= 4
+                    questionScore >= 3.5
                       ? "green"
-                      : questionScore >= 3
+                      : questionScore >= 2.25
                       ? "yellow"
                       : "red"
                   }

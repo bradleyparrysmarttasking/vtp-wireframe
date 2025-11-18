@@ -8,7 +8,9 @@ type Action = {
 };
 
 export function useQuestions() {
-  const [metNotMet, setMetNotMet] = useState<"Met" | "Not Met" | null>(null);
+  const [metNotMet, setMetNotMet] = useState<
+    "Met" | "Partially Met" | "Not Met" | null
+  >(null);
   const [goodPractice, setGoodPractice] = useState<string>("");
   const [improvement, setImprovement] = useState<string>("");
   const [actions, setActions] = useState<Action[]>([]);

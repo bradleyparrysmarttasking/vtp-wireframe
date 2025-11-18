@@ -12,6 +12,7 @@ import WarningModal from "./pages/WarningModal/WarningModal";
 import { useAuthenticator } from "@aws-amplify/ui-react";
 import { MantineProvider } from "@mantine/core";
 import { DocumentUpload } from "./components/DocumentUploads/DocumentUpload";
+import { CaseSelection } from "./iqa_app/CaseSelection";
 
 function IQAApp() {
   const { signOut } = useAuthenticator((context) => [context.authStatus]);
@@ -23,7 +24,7 @@ function IQAApp() {
         <SkipLink href="#main-content">Skip to main content</SkipLink>
         <TopNav
           company={
-            <TopNav.Anchor href="https://example.com" target="new">
+            <TopNav.Anchor href="#" target="new">
               <TopNav.IconTitle icon={<CPS />}>CPS</TopNav.IconTitle>
             </TopNav.Anchor>
           }
@@ -37,7 +38,8 @@ function IQAApp() {
         >
           <Router>
             <Routes>
-              <Route path="/submit-iqa" element={<Home />} />
+              <Route path="/create-iqa/" element={<CaseSelection />} />
+              <Route path="/submit-iqa/:case" element={<Home />} />
               <Route
                 path="/"
                 element={<Navigate replace to={"/submit-iqa"} />}

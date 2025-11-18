@@ -82,24 +82,53 @@ export const questionData = [
       </Stack>
     ),
     score: 2,
-    documents: [
-      // {
-      //   key: "documents/Disclosure_Management_Document.pdf",
-      //   label: "Disclosure Management Document",
-      // },
-      // {
-      //   key: "documents/Disclosure_Record_Sheet.pdf",
-      //   label: "Disclosure Record Sheet",
-      // },
-      {
-        key: "documents/DMD_Good.pdf",
-        label: "DMD",
-      },
-      {
-        key: "documents/DRS_Good.pdf",
-        label: "DRS",
-      },
-    ],
+    documents: (caseId: string) => {
+      if (caseId === "exemplar")
+        return [
+          {
+            key: "documents/DMD_Exemplar.pdf",
+            label: "DMD Exemplar",
+          },
+          {
+            key: "documents/DRS_Exemplar.pdf",
+            label: "DRS Exemplar",
+          },
+        ];
+      if (caseId === "good")
+        return [
+          {
+            key: "documents/DMD_Good.pdf",
+            label: "DMD Good",
+          },
+          {
+            key: "documents/DRS_Good.pdf",
+            label: "DRS Good",
+          },
+        ];
+      if (caseId === "fair")
+        return [
+          {
+            key: "documents/DMD_Fair.pdf",
+            label: "DMD Fair",
+          },
+          {
+            key: "documents/DRS_Fair.pdf",
+            label: "DRS Fair",
+          },
+        ];
+      if (caseId === "poor")
+        return [
+          {
+            key: "documents/DMD_Poor.pdf",
+            label: "DMD Poor",
+          },
+          {
+            key: "documents/DRS_Poor.pdf",
+            label: "DRS Poor",
+          },
+        ];
+      return [];
+    },
   },
   {
     question: "Question 12",

@@ -6,7 +6,7 @@ export function ScoreBadge({
   decimalPlaces = false,
   ...props
 }: { score: number; text?: string; decimalPlaces?: boolean } & BadgeProps) {
-  const color = score >= 4 ? "green" : score >= 3 ? "yellow" : "red";
+  const color = score >= 3.5 ? "green" : score >= 2.25 ? "yellow" : "red";
   return (
     <Badge color={color} {...props}>
       {text}

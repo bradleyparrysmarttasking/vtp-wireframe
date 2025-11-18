@@ -1,4 +1,5 @@
 import {
+  BackLink,
   Button,
   Details,
   GridCol,
@@ -24,15 +25,23 @@ import {
   SimpleGrid,
   Stack,
   Text,
+  Button as MantineButton,
 } from "@mantine/core";
 import { questionData } from "./questionData";
-import { goodPracticeData, LLMOutputDataEntry } from "./llmOutputData";
-import { useEffect, useState } from "react";
+import {
+  good,
+  exemplar,
+  fair,
+  poor,
+  LLMOutputDataEntry,
+} from "./llmOutputData";
+import { useEffect, useMemo, useState } from "react";
 import { ScoreBadge } from "./ScoreBadge";
 import { DocumentViewer } from "./DocumentViewer";
-import { IconCopy, IconInfoCircle } from "@tabler/icons-react";
+import { IconArrowLeft, IconCopy, IconInfoCircle } from "@tabler/icons-react";
 import { useQuestions } from "./useQuestions";
 import { ActionsSection } from "./ActionsSection";
+import { useNavigate, useParams } from "react-router-dom";
 
 function snakeToProperCase(snake: string): string {
   return snake
@@ -42,6 +51,8 @@ function snakeToProperCase(snake: string): string {
 }
 
 export function Home() {
+  const navigate = useNavigate();
+  const { case: caseId } = useParams();
   const [fakeLoading, setFakeLoading] = useState(true);
   const {
     metNotMet,
@@ -64,10 +75,17 @@ export function Home() {
   useEffect(() => {
     setTimeout(() => {
       setFakeLoading(false);
-    }, 2000);
+    }, 2500);
   }, []);
 
-  const questionScores: LLMOutputDataEntry[] = goodPracticeData;
+  const questionScores: LLMOutputDataEntry[] = useMemo(() => {
+    if (!caseId) return [];
+    if (caseId === "exemplar") return exemplar;
+    if (caseId === "good") return good;
+    if (caseId === "fair") return fair;
+    if (caseId === "poor") return poor;
+    return good;
+  }, [caseId]);
 
   const totalAverageScore =
     questionScores.reduce(
@@ -91,26 +109,37 @@ export function Home() {
       0
     ) / Object.values(currentQuestionScoreObject.ratings).length;
 
-  // const color =
-  //   currentQuestionScore >= 4
-  //     ? "green"
-  //     : currentQuestionScore >= 3
-  //     ? "yellow"
-  //     : "red";
+  const documents = useMemo(() => {
+    if (!caseId || !currentQuestionData.documents) return [];
+    return currentQuestionData.documents(caseId);
+  }, [caseId, currentQuestionData]);
 
   return (
     <Stack>
+      <Box>
+        <MantineButton
+          leftIcon={<IconArrowLeft />}
+          onClick={() => navigate("/create-iqa")}
+          variant="subtle"
+        >
+          Back
+        </MantineButton>
+      </Box>
       <Group position="apart">
         <Heading as="h1" size={24}>
           16GH1510125 - Defendant John Doe
         </Heading>
         <Group>
           <Text fw={500}>Average AI Score:</Text>
-          <ScoreBadge
-            score={totalAverageScore}
-            decimalPlaces={true}
-            size="xl"
-          />
+          {fakeLoading ? (
+            <Loader size="md" color="blue" />
+          ) : (
+            <ScoreBadge
+              score={totalAverageScore}
+              decimalPlaces={true}
+              size="xl"
+            />
+          )}
         </Group>
       </Group>
       <QuestionStepper fakeLoading={fakeLoading} active={currentQuestion} />
@@ -136,12 +165,30 @@ export function Home() {
             {fakeLoading ? (
               <Loader size="md" color="blue" />
             ) : (
-              <ScoreBadge
-                score={currentQuestionScore}
-                text={`Overall Question Score: `}
-                size="lg"
-                variant="filled"
-              />
+              <Group>
+                <ScoreBadge
+                  score={currentQuestionScore}
+                  text={`Overall Question Score: `}
+                  size="lg"
+                  variant="filled"
+                />
+                <Text
+                  size="lg"
+                  c={
+                    currentQuestionScore >= 3.5
+                      ? "green"
+                      : currentQuestionScore >= 2.25
+                      ? "yellow"
+                      : "red"
+                  }
+                >
+                  {currentQuestionScore >= 3.5
+                    ? "Met"
+                    : currentQuestionScore >= 2.25
+                    ? "Partially Met"
+                    : "Not Met"}
+                </Text>
+              </Group>
             )}
           </Group>
         }
@@ -253,7 +300,7 @@ export function Home() {
           <Heading as="h3" size={16}>
             Relevant Case Material
           </Heading>
-          <DocumentViewer documents={currentQuestionData.documents} />
+          <DocumentViewer documents={documents} />
         </GridCol>
         <GridCol setWidth="one-third">
           <Stack>
@@ -266,6 +313,15 @@ export function Home() {
                 onChange={() => setMetNotMet("Met")}
               >
                 Met
+              </Radio>
+              <Radio
+                inline
+                name="group1"
+                value="Not Met"
+                checked={metNotMet === "Partially Met"}
+                onChange={() => setMetNotMet("Partially Met")}
+              >
+                Partially Met
               </Radio>
               <Radio
                 inline
