@@ -35,7 +35,7 @@ export const cases: Case[] = [
     type: "Domestic Abuse",
   },
   {
-    prosecutor: "John Bad",
+    prosecutor: "John Poor",
     defendants: ["Jane Doe", "Jim Doe"],
     urn: "1234567893",
     category: "poor",
@@ -111,6 +111,7 @@ export function CaseSelection() {
             alignItems: "center",
             height: "100%",
           }}
+          mb={"xl"}
         >
           <Loader color="blue" size="xl" />
         </Box>
