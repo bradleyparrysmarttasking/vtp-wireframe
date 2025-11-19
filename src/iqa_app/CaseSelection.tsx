@@ -2,12 +2,14 @@ import { Box, Loader, Stack } from "@mantine/core";
 import { Button, Heading, InsetText, Link, Table } from "govuk-react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { CriteriaSection } from "./CriteriaSection";
 
 type Case = {
   prosecutor: string;
   defendants: string[];
   urn: string;
   category: string;
+  type: string;
 };
 
 export const cases: Case[] = [
@@ -16,29 +18,33 @@ export const cases: Case[] = [
     defendants: ["Jane Doe", "Jim Doe"],
     urn: "1234567890",
     category: "exemplar",
+    type: "Domestic Abuse",
   },
   {
     prosecutor: "Jane Good",
     defendants: ["Jim Doe", "John Doe"],
     urn: "1234567891",
     category: "good",
+    type: "Domestic Abuse",
   },
   {
     prosecutor: "Jim Fair",
     defendants: ["John Doe", "Jane Doe"],
     urn: "1234567892",
     category: "fair",
+    type: "Domestic Abuse",
   },
   {
     prosecutor: "John Bad",
     defendants: ["Jane Doe", "Jim Doe"],
     urn: "1234567893",
     category: "poor",
+    type: "Domestic Abuse",
   },
 ];
 
 function TableRow({
-  case: { prosecutor, defendants, urn, category },
+  case: { prosecutor, defendants, urn, category, type },
 }: {
   case: Case;
 }) {
@@ -91,6 +97,7 @@ export function CaseSelection() {
         To ensure the IQA process covers a representative sample of cases, we
         use an algorithm to generate a shortlist for you to select from.
       </InsetText>
+      <CriteriaSection />
       {!showList && !loading && (
         <Button onClick={generateCaseShortlist} disabled={loading}>
           {loading ? "Generating..." : "Generate Case Shortlist"}
